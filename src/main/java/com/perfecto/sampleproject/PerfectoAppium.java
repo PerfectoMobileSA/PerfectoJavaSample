@@ -40,7 +40,7 @@ public class PerfectoAppium {
 		WebDriver driver = new RemoteWebDriver(new URL("https://" + cloudName + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		PerfectoExecutionContext perfectoExecutionContext;
-		// Reporting client. For more details, see http://developers.perfectomobile.com/display/PD/Reporting
+		// Reporting client. For more details, see https://developers.perfectomobile.com/display/PD/Java
 		if(System.getProperty("reportium-job-name") != null) {
 			perfectoExecutionContext = new PerfectoExecutionContext.PerfectoExecutionContextBuilder()
 					.withProject(new Project("My Project", "1.0"))
