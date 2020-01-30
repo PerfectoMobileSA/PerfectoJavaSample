@@ -61,14 +61,16 @@ TestNG Plugin is built-in in the IntelliJ IDEA, from version 7 onwards.
 		install
 		-DcloudName=${cloudName}
 		-DsecurityToken=${securityToken}
+		-DtestngXmlFile=testng_perfecto.xml
 
-* The Maven will automatically kick start the parallel execution of different examples inside perfecto packaage in parallel.
+* The Maven will automatically kick start the parallel execution of different examples inside perfecto package in parallel if `-DtestngXmlFile=testng.xml` is added as maven properties, if you want to run only perfecto scripts just set this: `-DtestngXmlFile=testng_perfecto.xml` as maven properties
 
 * CI dashboard integration can be performed by supplying the below properties to top-level Maven Targets:
 
 		clean
 		install
 		-DcloudName=${cloudName}
+		-DtestngXmlFile=testng_perfecto.xml
 		-DsecurityToken=${securityToken}
 		-Dreportium-job-name=${JOB_NAME} 
 		-Dreportium-job-number=${BUILD_NUMBER} 
