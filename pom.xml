@@ -16,7 +16,7 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<reportium-sdk.version>RELEASE</reportium-sdk.version>
-		<testngXmlFile>testng.xml</testngXmlFile>
+		<testngXmlFile>testng_perfecto.xml</testngXmlFile>
 	</properties>
 
 	<build>
