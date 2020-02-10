@@ -53,12 +53,13 @@ TestNG Plugin is built-in in the IntelliJ IDEA, from version 7 onwards.
 
 * Open PerfectoAppium.java and PerfectoSelenium.java</p>
 
-* Search for the below line and replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it as maven properties: -DcloudName=<<cloud name>></br>  
-			`String cloudName = System.getProperty("cloudName", "<<cloud name>>");`
+* Search for the below line and replace `<<cloud name>>` with your perfecto cloud name (e.g. demo) or pass it as maven properties: `-DcloudName=<<cloud name>>`</br>  
+		&nbsp;&nbsp;	&nbsp;&nbsp;`String cloudName = System.getProperty("cloudName", "<<cloud name>>");`
 		</br>
 		</p>
-* Search for the below line and replace <<SECURITY TOKEN>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens</br></p>
-	`String securityToken = System.getProperty("securityToken", "<<SECURITY TOKEN>>");`
+* Search for the below line and replace `<<SECURITY TOKEN>>` with your perfecto [security token](https://developers.perfectomobile.com/display/PD/Generate+security+tokens) or pass it as maven properties: `-DsecurityToken=<<SECURITY TOKEN>>`  
+</p>
+	&nbsp;&nbsp;&nbsp;&nbsp;`String securityToken = System.getProperty("securityToken", "<<SECURITY TOKEN>>");`
 	</br></p>
 
 * Run pom.xml with the below maven goals & properties when: </p>
