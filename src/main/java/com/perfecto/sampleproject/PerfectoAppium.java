@@ -25,10 +25,10 @@ public class PerfectoAppium {
 
 	@Test
 	public void main() throws MalformedURLException {
-		//Update cloudName variable with your perfecto cloud name
-		String cloudName = System.getProperty("cloudName");
-		//Update securityToken variable with your perfecto security token. 
-		String securityToken = System.getProperty("securityToken");
+		//Replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it as maven properties: -DcloudName=<<cloud name>>  
+		String cloudName = System.getProperty("cloudName", "<<cloud name>>");
+		//Replace <<SECURITY TOKEN>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
+		String securityToken = System.getProperty("securityToken", "<<SECURITY TOKEN>>");
 		//A sample perfecto connect appium script to connect with a perfecto android device and perform addition validation in calculator app.
 		String browserName = "mobileOS";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);

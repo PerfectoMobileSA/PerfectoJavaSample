@@ -22,15 +22,16 @@ public class PerfectoSelenium {
 
 	@Test
 	public void main() throws MalformedURLException {
-		//Update cloudName variable with your perfecto cloud name
-		String cloudName = System.getProperty("cloudName");
-		//Update securityToken variable with your perfecto security token. 
-		String securityToken = System.getProperty("securityToken");
+		//Replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it as maven properties: -DcloudName=<<cloud name>>  
+		String cloudName = System.getProperty("cloudName", "<<cloud name>>");
+		//Replace <<SECURITY TOKEN>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
+		String securityToken = System.getProperty("securityToken", "<<SECURITY TOKEN>>");
 		String browserName = "mobileOS";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
 		capabilities.setCapability("securityToken", securityToken);
 		capabilities.setCapability("platformName", "Android");
-
+		capabilities.setCapability("useAppiumForWeb", true);
+		capabilities.setCapability("browserName","Safari");
 		RemoteWebDriver driver = new RemoteWebDriver(new URL("https://" + cloudName + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);

@@ -51,19 +51,31 @@ TestNG Plugin is built-in in the IntelliJ IDEA, from version 7 onwards.
 ## Running sample as is
 
 
-* Configure the name of your Perfecto cloud as a system variable by passing your cloud name as a -DcloudName=<<cloud name>> from CI / Maven system property while running the install goal of Maven or simply hardcode your cloud name in the script.
+* Open PerfectoAppium.java and PerfectoSelenium.java</p>
 
-* Configure your security token from Maven/ any CI tools like Jenkins by passing the -DsecurityToken=<<token>> system property while running the install goal of Maven or simply hardcode it.
+* Search for the below line and replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it as maven properties: -DcloudName=<<cloud name>></br>  
+			`String cloudName = System.getProperty("cloudName", "<<cloud name>>");`
+		</br>
+		</p>
+* Search for the below line and replace <<SECURITY TOKEN>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens</br></p>
+	`String securityToken = System.getProperty("securityToken", "<<SECURITY TOKEN>>");`
+	</br></p>
 
-* Run pom.xml with the below maven goals & properties
-
+* Run pom.xml with the below maven goals & properties when: </p>
+   a. If credentials are hardcoded:
+		
+		clean
+		install
+		
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b. If credentials are passed as parameters:
+		
 		clean
 		install
 		-DcloudName=${cloudName}
 		-DsecurityToken=${securityToken}
-		-DtestngXmlFile=testng_perfecto.xml
+		-DtestngXmlFile=testng_perfecto.xml`
 
-* The Maven will automatically kick start the parallel execution of different examples inside perfecto package in parallel if `-DtestngXmlFile=testng.xml` is added as maven properties, if you want to run only perfecto scripts just set this: `-DtestngXmlFile=testng_perfecto.xml` as maven properties
+* Maven will automatically kick start the parallel execution of different examples inside perfecto package in parallel if `-DtestngXmlFile=testng.xml` is passed as maven properties, if you want to run only perfecto scripts just pass this: `-DtestngXmlFile=testng_perfecto.xml` as maven properties. (this is the default behaviour) </p>
 
 * CI dashboard integration can be performed by supplying the below properties to top-level Maven Targets:
 
