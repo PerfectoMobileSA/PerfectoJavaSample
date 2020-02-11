@@ -1,5 +1,5 @@
 package com.perfecto.sampleproject;
-import java.net.MalformedURLException;
+import com.perfecto.sampleproject.Utils;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -21,18 +21,19 @@ import com.perfecto.reportium.test.result.TestResultFactory;
 public class PerfectoSelenium {
 
 	@Test
-	public void main() throws MalformedURLException {
+	public void main() throws Exception {
 		//Replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it as maven properties: -DcloudName=<<cloud name>>  
-		String cloudName = System.getProperty("cloudName", "<<cloud name>>");
-		//Replace <<SECURITY TOKEN>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
-		String securityToken = System.getProperty("securityToken", "<<SECURITY TOKEN>>");
+		String cloudName = "<<cloud name>>";
+		//Replace <<security token>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
+		String securityToken = "<<security token>>";
+		
 		String browserName = "mobileOS";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
-		capabilities.setCapability("securityToken", securityToken);
+		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
 		capabilities.setCapability("platformName", "Android");
 		capabilities.setCapability("useAppiumForWeb", true);
 		capabilities.setCapability("browserName","Safari");
-		RemoteWebDriver driver = new RemoteWebDriver(new URL("https://" + cloudName + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
+		RemoteWebDriver driver = new RemoteWebDriver(new URL("https://" + Utils.fetchCloudName(cloudName) + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
 		// Reporting client. For more details, see https://developers.perfectomobile.com/display/PD/Java
