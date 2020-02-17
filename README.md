@@ -59,8 +59,9 @@ TestNG Plugin is built-in in the IntelliJ IDEA, from version 7 onwards.
 		</p>
 * Search for the below line and replace `<<SECURITY TOKEN>>` with your perfecto [security token](https://developers.perfectomobile.com/display/PD/Generate+security+tokens) or pass it as maven properties: `-DsecurityToken=<<SECURITY TOKEN>>` </br></p>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String securityToken = `"<<SECURITY TOKEN>>"`;
-	</br></p>
+	</br>
 
+Note: Refer to official documentation on how to execute from eclipse / IntelliJ. </br>
 * Run pom.xml with the below maven goals & properties when: </p>
    a. If credentials are hardcoded:
 		
@@ -74,6 +75,7 @@ TestNG Plugin is built-in in the IntelliJ IDEA, from version 7 onwards.
 		-DcloudName=${cloudName}
 		-DsecurityToken=${securityToken}
 		-DtestngXmlFile=testng_perfecto.xml
+</p>
 
 * Maven will automatically kick start the parallel execution of different examples inside perfecto package in parallel if `-DtestngXmlFile=testng.xml` is passed as maven properties, if you want to run only perfecto scripts just pass this: `-DtestngXmlFile=testng_perfecto.xml` as maven properties. (this is the default behaviour) </p>
 

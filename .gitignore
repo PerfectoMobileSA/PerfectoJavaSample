@@ -20,5 +20,5 @@ perfectoReports/
 test-output/
 build/
 .DS_Store
-
-
+*.iml
+.idea/
