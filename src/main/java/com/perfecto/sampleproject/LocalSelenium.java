@@ -1,4 +1,6 @@
 package com.perfecto.sampleproject;
+import static org.testng.Assert.assertTrue;
+
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
@@ -9,7 +11,7 @@ import org.testng.annotations.Test;
 public class LocalSelenium {
 
 	@Test
-	public void main() {
+	public void localTest() {
 		//Note: Download chromeDriver for windows and update the below if running from Windows.
 		System.setProperty("webdriver.chrome.driver",System.getProperty("user.dir") + "//libs//chromedriver");
 		//A sample chrome driver script to access perfecto website and verify the title
@@ -18,15 +20,8 @@ public class LocalSelenium {
 		driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
 		driver.get("https://www.perfecto.io");
 		String aTitle = driver.getTitle();
-		System.out.println(aTitle);
 		//compare the actual title with the expected title
-		if (aTitle.equals("Web & Mobile App Testing | Continuous Testing | Perfecto"))
-		{
-			System.out.println( "Test Passed") ;
-		}
-		else {
-			System.out.println( "Test Failed" );
-		}
+		assertTrue(aTitle.equals("Web & Mobile App Testing | Continuous Testing | Perfecto"), "Title verified as expected");
 		driver.close();
 		driver.quit();
 	}
