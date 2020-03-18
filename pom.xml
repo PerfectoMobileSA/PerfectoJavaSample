@@ -168,12 +168,12 @@
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-api</artifactId>
-			<version>3.14.0</version>
+			<version>3.141.59</version>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-support</artifactId>
-			<version>3.14.0</version>
+			<version>3.141.59</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -193,7 +193,7 @@
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>6.1.0</version>
+			<version>7.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
