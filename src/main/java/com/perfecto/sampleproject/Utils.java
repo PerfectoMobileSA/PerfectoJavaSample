@@ -80,6 +80,20 @@ public class Utils {
 		if(reportiumClient != null)
 			reportiumClient.reportiumAssert("Verify Field: " + data.getText() , data.getText().equals(text));
 	}
+	
+	/**
+	 * Assert title
+	 * @param title
+	 * @param reportiumClient
+	 */
+	public static void assertTitle(String title, ReportiumClient reportiumClient) {
+		if (!title.equals("Web & Mobile App Testing | Continuous Testing | Perfecto")) {
+			reportiumClient.reportiumAssert("Title is mismatched", false);
+			throw new RuntimeException("Title is mismatched");
+		}else {
+			reportiumClient.reportiumAssert("Title is matching", true);
+		}
+	}
 
 }
 

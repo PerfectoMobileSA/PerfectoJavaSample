@@ -1,9 +1,11 @@
 package com.perfecto.sampleproject;
 import com.perfecto.sampleproject.Utils;
+
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Platform;
+import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestResult;
@@ -11,10 +13,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 import com.perfecto.reportium.client.ReportiumClient;
-import com.perfecto.reportium.client.ReportiumClientFactory;
-import com.perfecto.reportium.model.Job;
-import com.perfecto.reportium.model.PerfectoExecutionContext;
-import com.perfecto.reportium.model.Project;
 import com.perfecto.reportium.test.TestContext;
 import com.perfecto.reportium.test.result.TestResult;
 import com.perfecto.reportium.test.result.TestResultFactory;
@@ -37,37 +35,23 @@ public class PerfectoSelenium {
 		capabilities.setCapability("platformName", "Android");
 		capabilities.setCapability("useAppiumForWeb", true);
 		capabilities.setCapability("browserName","Safari");
-		driver = new RemoteWebDriver(new URL("https://" + Utils.fetchCloudName(cloudName) + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
-		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-		driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
-		// Reporting client. For more details, see https://developers.perfectomobile.com/display/PD/Java
-		PerfectoExecutionContext perfectoExecutionContext;
-		if(System.getProperty("reportium-job-name") != null) {
-			perfectoExecutionContext = new PerfectoExecutionContext.PerfectoExecutionContextBuilder()
-					.withProject(new Project("My Project", "1.0"))
-					.withJob(new Job(System.getProperty("reportium-job-name") , Integer.parseInt(System.getProperty("reportium-job-number"))))
-					.withContextTags("tag1")
-					.withWebDriver(driver)
-					.build();
-		} else {
-			perfectoExecutionContext = new PerfectoExecutionContext.PerfectoExecutionContextBuilder()
-					.withProject(new Project("My Project", "1.0"))
-					.withContextTags("tag1")
-					.withWebDriver(driver)
-					.build();
+		try{
+			driver = new RemoteWebDriver(new URL("https://" + Utils.fetchCloudName(cloudName) + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
+		}catch(SessionNotCreatedException e){
+			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString());
 		}
-		reportiumClient = new ReportiumClientFactory().createPerfectoReportiumClient(perfectoExecutionContext);
 
-		reportiumClient.testStart("Perfecto mobile web test", new TestContext("tag2", "tag3"));
-		reportiumClient.stepStart("browser navigate to perfecto");
+		reportiumClient = Utils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
+		reportiumClient.testStart("Perfecto mobile web test", new TestContext("tag2", "tag3")); //Starts the reportium test
+		reportiumClient.stepStart("browser navigate to perfecto"); //Starts a reportium step
 		driver.get("https://www.perfecto.io");
 		reportiumClient.stepEnd();
 
 		reportiumClient.stepStart("Verify title");
 		String aTitle = driver.getTitle();
-		//compare the actual title with the expected title
-		if (!aTitle.equals("Web & Mobile App Testing | Continuous Testing | Perfecto"))
-			throw new RuntimeException("Title is mismatched");
+		Utils.assertTitle(aTitle, reportiumClient); //compare the actual title with the expected title
 		reportiumClient.stepEnd();
 	}
 
