@@ -1,6 +1,21 @@
 package com.perfecto.sampleproject;
 
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import com.perfecto.reportium.client.ReportiumClient;
+import com.perfecto.reportium.client.ReportiumClientFactory;
+import com.perfecto.reportium.model.Job;
+import com.perfecto.reportium.model.PerfectoExecutionContext;
+import com.perfecto.reportium.model.Project;
+
 public class Utils {
+	/**
+	 * fetches cloud name
+	 * @param cloudName
+	 * @return
+	 * @throws Exception
+	 */
 	public static String fetchCloudName(String cloudName) throws Exception {
 		//Verifies if cloudName is hardcoded, else loads from Maven properties 
 		String finalCloudName = cloudName.equalsIgnoreCase("<<cloud name>>") ? System.getProperty("cloudName") : cloudName;
@@ -10,7 +25,13 @@ public class Utils {
 		else
 			return finalCloudName;
 	}
-	
+
+	/**
+	 * Fetches security token
+	 * @param securityToken
+	 * @return
+	 * @throws Exception
+	 */
 	public static String fetchSecurityToken(String securityToken) throws Exception {
 		//Verifies if securityToken is hardcoded, else loads from Maven properties
 		String finalSecurityToken = securityToken.equalsIgnoreCase("<<security token>>") ? System.getProperty("securityToken") : securityToken;
@@ -20,5 +41,45 @@ public class Utils {
 		else
 			return finalSecurityToken;
 	}
+
+	/**
+	 * Creates reportium client
+	 * @param driver
+	 * @param reportiumClient
+	 * @return
+	 */
+	public static ReportiumClient setReportiumClient(RemoteWebDriver driver, ReportiumClient reportiumClient) {
+		PerfectoExecutionContext perfectoExecutionContext;
+		// Reporting client. For more details, see https://developers.perfectomobile.com/display/PD/Java
+		if(System.getProperty("reportium-job-name") != null) {
+			perfectoExecutionContext = new PerfectoExecutionContext.PerfectoExecutionContextBuilder()
+					.withProject(new Project("My Project", "1.0"))
+					.withJob(new Job(System.getProperty("reportium-job-name") , Integer.parseInt(System.getProperty("reportium-job-number"))))
+					.withContextTags("tag1")
+					.withWebDriver(driver)
+					.build();
+		} else {
+			perfectoExecutionContext = new PerfectoExecutionContext.PerfectoExecutionContextBuilder()
+					.withProject(new Project("My Project", "1.0"))
+					.withContextTags("tag1")
+					.withWebDriver(driver)
+					.build();
+		}
+		reportiumClient = new ReportiumClientFactory().createPerfectoReportiumClient(perfectoExecutionContext);
+		return reportiumClient;
+	}
+	
+	/**
+	 * Asserts text
+	 * @param WebElement
+	 * @param reportiumClient
+	 * @param text
+	 */
+	public static void assertText(WebElement data, ReportiumClient reportiumClient, String text) {
+		assert data.getText().equals(text) : "Actual text : " + data.getText() + ". It did not match with expected text: " +  text;
+		if(reportiumClient != null)
+			reportiumClient.reportiumAssert("Verify Field: " + data.getText() , data.getText().equals(text));
+	}
+
 }
 

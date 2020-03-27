@@ -1,15 +1,13 @@
 package com.perfecto.sampleproject;
 import java.net.URL;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Platform;
+import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -35,7 +33,7 @@ public class PerfectoAppium {
 		String cloudName = "<<cloud name>>";
 		//Replace <<security token>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
 		String securityToken = "<<security token>>";
-		
+
 		//A sample perfecto connect appium script to connect with a perfecto android device and perform addition validation in calculator app.
 		String browserName = "mobileOS";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
@@ -43,53 +41,32 @@ public class PerfectoAppium {
 		capabilities.setCapability("model", "Galaxy S.*");
 		capabilities.setCapability("enableAppiumBehavior", true);
 		capabilities.setCapability("openDeviceTimeout", 2);
-		capabilities.setCapability("appPackage", "com.sec.android.app.popupcalculator");
-		driver = (RemoteWebDriver)(new AppiumDriver(new URL("https://" + Utils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
-		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-		PerfectoExecutionContext perfectoExecutionContext;
-		// Reporting client. For more details, see https://developers.perfectomobile.com/display/PD/Java
-		if(System.getProperty("reportium-job-name") != null) {
-			perfectoExecutionContext = new PerfectoExecutionContext.PerfectoExecutionContextBuilder()
-					.withProject(new Project("My Project", "1.0"))
-					.withJob(new Job(System.getProperty("reportium-job-name") , Integer.parseInt(System.getProperty("reportium-job-number"))))
-					.withContextTags("tag1")
-					.withWebDriver(driver)
-					.build();
-		} else {
-			perfectoExecutionContext = new PerfectoExecutionContext.PerfectoExecutionContextBuilder()
-					.withProject(new Project("My Project", "1.0"))
-					.withContextTags("tag1")
-					.withWebDriver(driver)
-					.build();
+		capabilities.setCapability("appPackage", "com.android.settings");
+		capabilities.setCapability("appActivity", "com.android.settings.Settings");	
+		try{
+			driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + Utils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		}catch(SessionNotCreatedException e){
+			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString());
 		}
-		reportiumClient = new ReportiumClientFactory().createPerfectoReportiumClient(perfectoExecutionContext);
 
-		reportiumClient.testStart("My Calculator Test", new TestContext("tag2", "tag3"));
-		reportiumClient.stepStart("Testing Appium driver");
-		String contextName = ((AppiumDriver)driver).getContext();
-		Set<String> contextHandles = ((AppiumDriver)driver).getContextHandles();
-		reportiumClient.reportiumAssert("Context:" +contextName , !contextName.isEmpty());
+		reportiumClient = Utils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
+		reportiumClient.testStart("My Settings Test", new TestContext("tag2", "tag3")); //Starts the reportium test
+
+		reportiumClient.stepStart("Verify Settings App is loaded"); //Starts a reportium step
+		driver.findElement(By.xpath("//*[contains(@resource-id,':id/collpasing_app_bar_extended_title') or contains(@resource-id,'settings:id/search')] | //*[contains(@text,'Search')]")).isDisplayed();
+		reportiumClient.stepEnd(); //Stops a reportium step
+
+		reportiumClient.stepStart("Verify Data usage validation");
+		driver.findElement(By.xpath("//*[contains(@text,'Data usage')]")).click();
+		WebElement data = driver.findElement(By.xpath("//*[@text='Data usage']"));
+		Utils.assertText(data, reportiumClient, "Data usage");
 		reportiumClient.stepEnd();
-
-		reportiumClient.stepStart("Perform addition");
-		driver.findElement(By.xpath("//android.widget.Button[@text='1']")).click();
-		driver.findElement(By.xpath("//android.widget.Button[@text='+']")).click();
-		driver.findElement(By.xpath("//android.widget.Button[@text='1']")).click();
-		driver.findElement(By.xpath("//android.widget.Button[@text='=']")).click();
-		reportiumClient.stepEnd();
-
-//		reportiumClient.stepStart("Verify Total");
-//		WebDriverWait wait=new WebDriverWait(driver, 20);
-//		WebElement results = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath( "//*[contains(@resource-id,'id/calc_edt_formula') or contains(@resource-id,'id/txtCalc')]")));
-//		reportiumClient.reportiumAssert("Verify Result: " + results.getText() , results.getText().equals("2"));
-//		reportiumClient.stepEnd();
 	}
 
 	@AfterMethod
 	public void afterMethod(ITestResult result) {
-		//STOP TEST
 		TestResult testResult = null;
-
 		if(result.getStatus() == result.SUCCESS) {
 			testResult = TestResultFactory.createSuccess();
 		}
@@ -104,6 +81,8 @@ public class PerfectoAppium {
 		String reportURL = reportiumClient.getReportUrl();
 		System.out.println(reportURL);
 	}
+
+
 
 }
 

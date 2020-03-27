@@ -1,36 +1,45 @@
 package com.perfecto.sampleproject;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.DriverCommand;
+import org.openqa.selenium.remote.RemoteExecuteMethod;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.Test;
 
+import io.appium.java_client.android.AndroidDriver;
+
 
 public class LocalAppium {
+	RemoteWebDriver driver;
 
 	@Test
 	public void addTest() throws Exception {
 		//Connect to an emulator and open calculator app. Note: appium server and simulator should be running
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability("BROWSER_NAME", "Android");
-		capabilities.setCapability("VERSION", "6.0"); 
+		capabilities.setCapability("VERSION", "8.0"); 
 		capabilities.setCapability("deviceName","Emulator");
 		capabilities.setCapability("platformName","Android");
-		capabilities.setCapability("appPackage", "com.android.calculator2");
-		capabilities.setCapability("appActivity", "com.android.calculator2.Calculator");
-		WebDriver driver = new RemoteWebDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-		//A sample appium script to connect with a local emulator and perform addition validation in calculator app.
-		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-		driver.findElement(By.xpath("//*[contains(@resource-id,'1')]")).click();
-		driver.findElement(By.xpath("//*[contains(@text,'+')]")).click();
-		driver.findElement(By.xpath("//*[contains(@resource-id,'1')]")).click();
-		driver.findElement(By.xpath("//*[contains(@text,'=')]")).click();
-		WebElement results=driver.findElement(By.xpath("//*[contains(@resource-id,'formula')]"));
-		assert results.getText().equals("2") : "Actual calculated number is : "+results.getText() + ". It did not match with expected value: 2";
+		capabilities.setCapability("appPackage", "com.android.settings");
+		capabilities.setCapability("appActivity", "com.android.settings.Settings");	
+		try {
+			driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		}catch(SessionNotCreatedException e){
+			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString());
+		}
+		
+		driver.findElement(By.xpath("//*[contains(@resource-id,':id/collpasing_app_bar_extended_title') or contains(@resource-id,'settings:id/search')] | //*[contains(@text,'Search')]")).isDisplayed();
+		driver.findElement(By.xpath("//*[contains(@text,'Data usage')]")).click();
+		WebElement data = driver.findElement(By.xpath("//*[@text='Data usage']"));
+		Utils.assertText(data, null, "Data usage");
 		driver.quit();
 	}
 
