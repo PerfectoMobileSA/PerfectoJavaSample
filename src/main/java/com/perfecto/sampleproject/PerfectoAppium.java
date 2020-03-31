@@ -59,7 +59,7 @@ public class PerfectoAppium {
 
 		reportiumClient.stepStart("Verify Data usage validation");
 		driver.findElement(By.xpath("//*[contains(@text,'Data usage')]")).click();
-		WebElement data = driver.findElement(By.xpath("//*[@text='Data usage']"));
+		WebElement data = driver.findElement(By.xpath("//*[contains(@resource-id, 'action_bar')]//*[@text='Data usage']"));
 		Utils.assertText(data, reportiumClient, "Data usage");
 		reportiumClient.stepEnd();
 	}
