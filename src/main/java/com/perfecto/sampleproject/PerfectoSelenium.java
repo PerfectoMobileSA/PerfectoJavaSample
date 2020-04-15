@@ -34,7 +34,6 @@ public class PerfectoSelenium {
 		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
 		capabilities.setCapability("platformName", "Android");
 		capabilities.setCapability("useAppiumForWeb", true);
-		capabilities.setCapability("browserName","Safari");
 		try{
 			driver = new RemoteWebDriver(new URL("https://" + Utils.fetchCloudName(cloudName) + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
 			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
