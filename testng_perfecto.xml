@@ -11,4 +11,9 @@
 			<class name="com.perfecto.sampleproject.PerfectoSelenium" />
 		</classes>
 	</test> <!-- Test -->
+	<test name="PerfectoNative" enabled="true">
+		<classes>
+			<class name="com.perfecto.sampleproject.PerfectoAppium_Native" />
+		</classes>
+	</test> <!-- Test -->
 </suite> <!-- Suite -->
