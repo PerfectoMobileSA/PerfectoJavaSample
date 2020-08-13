@@ -35,7 +35,7 @@ public class PerfectoAppium_Native {
 		DesiredCapabilities capabilities = new DesiredCapabilities("", "", Platform.ANY);
 		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
 		capabilities.setCapability("model", "iPhone.*");
-		capabilities.setCapability("platformVersion", "14.*");
+		capabilities.setCapability("platformVersion", "13.*");
 		capabilities.setCapability("platformName", "iOS");
 		capabilities.setCapability("enableAppiumBehavior", true);
 		capabilities.setCapability("openDeviceTimeout", 2);
