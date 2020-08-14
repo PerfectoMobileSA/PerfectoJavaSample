@@ -38,7 +38,7 @@ public class PerfectoAppium_Native {
 		capabilities.setCapability("platformVersion", "13.*");
 		capabilities.setCapability("platformName", "iOS");
 		capabilities.setCapability("enableAppiumBehavior", true);
-		capabilities.setCapability("openDeviceTimeout", 2);
+		capabilities.setCapability("openDeviceTimeout", 4);
 		capabilities.setCapability("app", "PUBLIC:Genesis/Sample/iOSInvoiceApp1.0.ipa");
 		capabilities.setCapability("bundleId", "io.perfecto.expense.tracker");
 		capabilities.setCapability("fullReset",true); 
