@@ -16,4 +16,9 @@
 			<class name="com.perfecto.sampleproject.PerfectoAppium_Native" />
 		</classes>
 	</test> <!-- Test -->
+		<test name="OTP Sample" enabled="true">
+		<classes>
+			<class name="com.perfecto.sampleproject.Perfecto_OTP_Sample" />
+		</classes>
+	</test> <!-- Test -->
 </suite> <!-- Suite -->

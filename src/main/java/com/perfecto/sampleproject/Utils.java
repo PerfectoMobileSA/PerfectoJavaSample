@@ -1,5 +1,8 @@
 package com.perfecto.sampleproject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -47,8 +50,9 @@ public class Utils {
 	 * @param driver
 	 * @param reportiumClient
 	 * @return
+	 * @throws Exception 
 	 */
-	public static ReportiumClient setReportiumClient(RemoteWebDriver driver, ReportiumClient reportiumClient) {
+	public static ReportiumClient setReportiumClient(RemoteWebDriver driver, ReportiumClient reportiumClient) throws Exception {
 		PerfectoExecutionContext perfectoExecutionContext;
 		// Reporting client. For more details, see https://developers.perfectomobile.com/display/PD/Java
 		if(System.getProperty("reportium-job-name") != null) {
@@ -66,9 +70,12 @@ public class Utils {
 					.build();
 		}
 		reportiumClient = new ReportiumClientFactory().createPerfectoReportiumClient(perfectoExecutionContext);
+		if (reportiumClient == null) {
+			throw new Exception("Reportium client not created!");
+		}
 		return reportiumClient;
 	}
-	
+
 	/**
 	 * Asserts text
 	 * @param WebElement
@@ -80,7 +87,7 @@ public class Utils {
 		if(reportiumClient != null)
 			reportiumClient.reportiumAssert("Verify Field: " + data.getText() , data.getText().equals(text));
 	}
-	
+
 	/**
 	 * Assert title
 	 * @param title
@@ -93,6 +100,12 @@ public class Utils {
 		}else {
 			reportiumClient.reportiumAssert("Title is matching", true);
 		}
+	}
+
+	public static String getDevicePhoneNumber(RemoteWebDriver driver){
+		Map<String, Object> params1 = new HashMap<>();
+		params1.put("property", "phoneNumber");
+		return (String) driver.executeScript("mobile:handset:info", params1);
 	}
 
 }
