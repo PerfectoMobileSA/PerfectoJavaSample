@@ -1,4 +1,7 @@
 ### Sample Java Project
+
+![CircleCI status](https://circleci.com/gh/PerfectoMobileSA/PerfectoSampleProject.svg?style=shield "CircleCI status")
+
 This sample project is designed to get you up and running within few simple steps.
 
 Begin with installing the dependencies below, and continue with the Getting Started procedure below.
