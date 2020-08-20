@@ -14,9 +14,9 @@ jobs: # a collection of steps
             paths:
               - ~/.m2
             key: PerfectoSampleProject-{{ checksum "pom.xml" }}
-        - run: mvn clean install -B -Dremote.server=${cloudurl}  -Dperfecto.capabilities.securityToken=${securityToken} -Dreportium-job-name=${CIRCLE_PROJECT_REPONAME} -Dreportium-job-number=${CIRCLE_BUILD_NUM} -Dreportium-job-branch=${CIRCLE_BRANCH} -Dreportium-tags="PerfectoSampleProject"
+        - run: mvn clean install -B -DcloudName=${cloudName}  -DsecurityToken=${securityToken} -Dreportium-job-name=${CIRCLE_PROJECT_REPONAME} -Dreportium-job-number=${CIRCLE_BUILD_NUM} -Dreportium-job-branch=${CIRCLE_BRANCH} -Dreportium-tags="test"
         - run: echo "Perfecto Suite Report- https://${cloudName}.reporting.perfectomobile.com/library?jobName[0]=${CIRCLE_PROJECT_REPONAME}&jobNumber[0]=${CIRCLE_BUILD_NUM}"
-workflows: # The following yaml will schedule this maven build operation to run every day at 2:35am UTC
+workflows: # The following yaml will schedule this maven build operation to run every day at 12:30am UTC
   version: 2
   commit:
     jobs:
@@ -24,7 +24,7 @@ workflows: # The following yaml will schedule this maven build operation to run 
   nightly:
     triggers:
       - schedule:
-          cron: "35 2 * * *"
+          cron: "30 0 * * *"
           filters:
             branches:
               only:
