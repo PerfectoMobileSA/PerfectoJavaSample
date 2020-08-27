@@ -1,4 +1,4 @@
-package com.perfecto.sampleproject;
+package com.perfecto.advanced;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +17,7 @@ import com.perfecto.reportium.client.ReportiumClient;
 import com.perfecto.reportium.test.TestContext;
 import com.perfecto.reportium.test.result.TestResult;
 import com.perfecto.reportium.test.result.TestResultFactory;
+import com.perfecto.sampleproject.Utils;
 
 import io.appium.java_client.AppiumDriver;
 

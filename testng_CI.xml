@@ -11,4 +11,14 @@
 			<class name="com.perfecto.sampleproject.PerfectoSelenium" />
 		</classes>
 	</test> <!-- Test -->
+	<test name="PerfectoNative" enabled="true">
+		<classes>
+			<class name="com.perfecto.advanced.PerfectoAppium_Native" />
+		</classes>
+	</test> <!-- Test -->
+		<test name="OTP Sample" enabled="true">
+		<classes>
+			<class name="com.perfecto.advanced.Perfecto_OTP_Sample" />
+		</classes>
+	</test> <!-- Test -->
 </suite> <!-- Suite -->

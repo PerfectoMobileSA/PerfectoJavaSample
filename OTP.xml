@@ -3,7 +3,7 @@
 <suite name="Suite" parallel="tests">
 	<test name="OTP" enabled="true">
 		<classes>
-			<class name="com.perfecto.sampleproject.Perfecto_OTP_Sample" />
+			<class name="com.perfecto.advanced.Perfecto_OTP_Sample" />
 		</classes>
 	</test> <!-- Test -->
 
