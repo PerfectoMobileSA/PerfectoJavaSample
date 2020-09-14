@@ -56,7 +56,8 @@ public class Perfecto_OTP_Sample {
 		capabilities = new DesiredCapabilities("", "", Platform.ANY);
 		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
 		capabilities.setCapability("enableAppiumBehavior", true);
-		capabilities.setCapability("description", "BrianGenesis");
+		//Make sure to select a device with phone number!!!!
+		capabilities.setCapability("description", "iPhoneWithSim");
 		capabilities.setCapability("platformName", "iOS");
 		capabilities.setCapability("openDeviceTimeout", 4);
 		capabilities.setCapability("bundleId", "com.apple.MobileSMS");
@@ -80,6 +81,9 @@ public class Perfecto_OTP_Sample {
 		By to = By.xpath("//*[@resource-id=\"com.samsung.android.messaging:id/recipients_editor_to\"]");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(to)).click();
 		System.out.println("phone number is: "+ phoneNumber);
+		if(phoneNumber.isEmpty()) {
+			throw new RuntimeException("Phone number of second device is empty!");
+		}
 		driver.findElement(to).sendKeys(phoneNumber);
 		Map<String, Object> params = new HashMap<>();
 		params.put("label", "Next");
