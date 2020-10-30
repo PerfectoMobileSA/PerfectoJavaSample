@@ -21,4 +21,14 @@
 			<class name="com.perfecto.advanced.Perfecto_OTP_Sample" />
 		</classes>
 	</test> <!-- Test -->
+	<test name="Audio to Text" enabled="true">
+		<classes>
+			<class name="com.perfecto.advanced.Audio_To_Text" />
+		</classes>
+	</test> <!-- Test -->
+		<test name="Wifi turn off On" enabled="true">
+		<classes>
+			<class name="com.perfecto.advanced.PerfectoAppiumiOSTurnOffWifi" />
+		</classes>
+	</test> <!-- Test -->
 </suite> <!-- Suite -->
