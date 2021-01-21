@@ -35,6 +35,7 @@ public class PerfectoAppium {
 		String securityToken = "<<security token>>";
 
 		//A sample perfecto connect appium script to connect with a perfecto android device and perform addition validation in calculator app.
+		//Auto generate capabilities for device selection: Auto generate capabilities: https://developers.perfectomobile.com/display/PD/Select+a+device+for+manual+testing#Selectadeviceformanualtesting-genCapGeneratecapabilities
 		String browserName = "mobileOS";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
 		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));

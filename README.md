@@ -56,7 +56,7 @@ TestNG Plugin is built-in in the IntelliJ IDEA, from version 7 onwards.
 
 * Open PerfectoAppium.java and PerfectoSelenium.java</p>
 
-* Search for the below line and replace `<<cloud name>>` with your perfecto cloud name (e.g. demo) or pass it as maven properties: `-DcloudName=<<cloud name>>`</br>  
+* Search for the below line and replace `<<cloud name>>` with your perfecto cloud name (e.g. testcloud is the cloudName of free trial users, Kindly reach out to Perfecto support in case of queries) or pass it as maven properties: `-DcloudName=<<cloud name>>`</br>  
 		&nbsp;&nbsp;	&nbsp;&nbsp; String cloudName = `"<<cloud name>>"`;
 		</br>
 		</p>
