@@ -10,6 +10,8 @@ import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -32,15 +34,13 @@ public class PerfectoAppiumiOSTurnOffWifi {
 		String cloudName = "<<cloud name>>";
 		//Replace <<security token>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
 		String securityToken = "<<security token>>";
-
 		//A sample perfecto connect appium script to connect with a perfecto android device and perform addition validation in calculator app.
 		String browserName = "mobileOS";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
 		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
 		capabilities.setCapability("model", "iPhone.*");
-//		capabilities.setCapability("platformName", "iOS");
 		capabilities.setCapability("enableAppiumBehavior", true);
-//		capabilities.setCapability("openDeviceTimeout", 2);
+		capabilities.setCapability("openDeviceTimeout", 2);
 		capabilities.setCapability("bundleId", "com.apple.mobilesafari");
 		try{
 			driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + Utils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
@@ -50,7 +50,7 @@ public class PerfectoAppiumiOSTurnOffWifi {
 		}
 
 		reportiumClient = Utils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
-		reportiumClient.testStart("My iOS wifi turn off & off Test", new TestContext("tag2", "tag3")); //Starts the reportium test
+		reportiumClient.testStart("My iOS wifi turn on & off Test", new TestContext("tag2", "tag3")); //Starts the reportium test
 
 		reportiumClient.stepStart("Verify iOS Settings App is loaded"); //Starts a reportium step
 		Map<String, Object> params = new HashMap<>();
@@ -62,12 +62,13 @@ public class PerfectoAppiumiOSTurnOffWifi {
 
 		reportiumClient.stepStart("Verify wifi turn off and on");
 		driver.findElementByXPath("//*[@value=\"Wi-Fi\"]").click();
-	
-		WebElement switchOnOff = driver.findElementByXPath("//*[@label=\"Wi-Fi\" and @value=\"1\"]");
-		switchOnOff.click();
-		WebElement switchOn = driver.findElementByXPath("//*[@label=\"Wi-Fi\" and @value=\"0\"]");
-		switchOn.click();
-		switchOnOff.isDisplayed();
+		WebDriverWait wait = new WebDriverWait(driver, 15);
+		Thread.sleep(5000);
+		try{
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@label=\"Wi-Fi\" and @value=\"1\"]"))).click();
+		}catch(Exception e){}
+		Thread.sleep(5000);
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@label=\"Wi-Fi\" and @value=\"0\"]"))).click();
 		reportiumClient.stepEnd();
 	}
 
