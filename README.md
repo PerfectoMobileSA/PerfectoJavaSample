@@ -1,6 +1,6 @@
 ### Sample Java Project
 
-![CircleCI status](https://circleci.com/gh/PerfectoMobileSA/PerfectoSampleProject.svg?style=shield "CircleCI status")
+![CircleCI status](https://circleci.com/gh/PerfectoMobileSA/PerfectoJavaSample.svg?style=shield "CircleCI status")
 
 This sample project is designed to get you up and running within few simple steps.
 
@@ -39,7 +39,7 @@ TestNG Plugin is built-in in the IntelliJ IDEA, from version 7 onwards.
 
 ## Downloading the Sample Project
 
-* [Clone](https://github.com/PerfectoMobileSA/PerfectoSampleProject.git) the repository.
+* [Clone](https://github.com/PerfectoMobileSA/PerfectoJavaSample.git) the repository.
 
 * After downloading and unzipping the project to your computer, open it from your IDE by choosing the folder containing the pom.xml 
 
