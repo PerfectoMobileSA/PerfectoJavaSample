@@ -55,7 +55,7 @@ public class PerfectoAppium {
 		reportiumClient.testStart("My Settings Test", new TestContext("tag2", "tag3")); //Starts the reportium test
 
 		reportiumClient.stepStart("Verify Settings App is loaded"); //Starts a reportium step
-		driver.findElement(By.xpath("//*[contains(@resource-id,':id/collpasing_app_bar_extended_title') or contains(@resource-id,'settings:id/search')] | //*[contains(@text,'Search')]")).isDisplayed();
+		driver.findElement(By.xpath("//*[contains(@resource-id,':id/collpasing_app_bar_extended_title') or contains(@resource-id,'settings:id/search')] | //*[contains(@text,'Search') | //*[@content-desc='Search']]")).isDisplayed();
 		reportiumClient.stepEnd(); //Stops a reportium step
 
 		reportiumClient.stepStart("Verify Data usage validation");
