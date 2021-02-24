@@ -36,7 +36,7 @@ public class LocalAppium {
 			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString());
 		}
 		
-		driver.findElement(By.xpath("//*[contains(@resource-id,':id/collpasing_app_bar_extended_title') or contains(@resource-id,'settings:id/search')] | //*[contains(@text,'Search')]")).isDisplayed();
+		driver.findElement(By.xpath("//*[contains(@resource-id,':id/collpasing_app_bar_extended_title') or contains(@resource-id,'settings:id/search')] | //*[contains(@text,'Search') | //*[@content-desc='Search']]")).isDisplayed();
 		driver.findElement(By.xpath("//*[contains(@text,'Data usage')]")).click();
 		WebElement data = driver.findElement(By.xpath("//*[contains(@resource-id, 'action_bar')]//*[@text='Data usage']"));
 		Utils.assertText(data, null, "Data usage");
