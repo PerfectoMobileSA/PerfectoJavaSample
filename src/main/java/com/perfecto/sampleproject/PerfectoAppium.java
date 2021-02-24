@@ -58,10 +58,9 @@ public class PerfectoAppium {
 		driver.findElement(By.xpath("//*[contains(@resource-id,':id/collpasing_app_bar_extended_title') or contains(@resource-id,'settings:id/search')] | //*[contains(@text,'Search')] | //*[@content-desc='Search']")).isDisplayed();
 		reportiumClient.stepEnd(); //Stops a reportium step
 
-		reportiumClient.stepStart("Verify Data usage validation");
-		driver.findElement(By.xpath("//*[contains(@text,'Data usage')]")).click();
-		WebElement data = driver.findElement(By.xpath("//*[contains(@resource-id, 'action_bar')]//*[@text='Data usage']"));
-		Utils.assertText(data, reportiumClient, "Data usage");
+		reportiumClient.stepStart("Verify Airplane mode is displayed");
+		WebElement data = driver.findElement(By.xpath("//*[contains(@text,'Airplane mode')]"));
+		Utils.assertContainsText(data, reportiumClient, "Airplane mode");
 		reportiumClient.stepEnd();
 	}
 

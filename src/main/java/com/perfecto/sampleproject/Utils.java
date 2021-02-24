@@ -82,10 +82,24 @@ public class Utils {
 	 * @param reportiumClient
 	 * @param text
 	 */
-	public static void assertText(WebElement data, ReportiumClient reportiumClient, String text) {
-		assert data.getText().equals(text) : "Actual text : " + data.getText() + ". It did not match with expected text: " +  text;
+	public static void assertText(WebElement element, ReportiumClient reportiumClient, String text) {
+		String elementText = element.getText();
 		if(reportiumClient != null)
-			reportiumClient.reportiumAssert("Verify Field: " + data.getText() , data.getText().equals(text));
+			reportiumClient.reportiumAssert("Verify Field: " + elementText , elementText.equals(text));
+		assert elementText.equals(text) : "Actual text : " + elementText + ". It did not match with expected text: " +  text;
+	}
+	
+	/**
+	 * Asserts contains text
+	 * @param WebElement
+	 * @param reportiumClient
+	 * @param text
+	 */
+	public static void assertContainsText(WebElement element, ReportiumClient reportiumClient, String text) {
+		String elementText = element.getText();
+		if(reportiumClient != null)
+			reportiumClient.reportiumAssert("Verify Field: " + elementText , elementText.contains(text));
+		assert elementText.equals(text) : "Actual text : " + elementText + " does not contain the expected text: " +  text;
 	}
 
 	/**

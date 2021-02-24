@@ -22,3 +22,4 @@ build/
 .DS_Store
 *.iml
 .idea/
+output.txt
