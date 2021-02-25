@@ -99,7 +99,7 @@ public class Utils {
 		String elementText = element.getText();
 		if(reportiumClient != null)
 			reportiumClient.reportiumAssert("Verify Field: " + elementText , elementText.contains(text));
-		assert elementText.equals(text) : "Actual text : " + elementText + " does not contain the expected text: " +  text;
+		assert elementText.contains(text) : "Actual text : " + elementText + " does not contain the expected text: " +  text;
 	}
 
 	/**
