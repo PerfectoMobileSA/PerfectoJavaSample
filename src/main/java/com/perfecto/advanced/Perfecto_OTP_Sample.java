@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -20,7 +19,7 @@ import com.perfecto.reportium.client.ReportiumClient;
 import com.perfecto.reportium.test.TestContext;
 import com.perfecto.reportium.test.result.TestResult;
 import com.perfecto.reportium.test.result.TestResultFactory;
-import com.perfecto.sampleproject.Utils;
+import com.perfecto.sampleproject.PerfectoLabUtils;
 
 import io.appium.java_client.AppiumDriver;
 
@@ -38,7 +37,7 @@ public class Perfecto_OTP_Sample {
 		String msg = "OTP:123123";
 		//		Driver 1
 		DesiredCapabilities capabilities = new DesiredCapabilities("", "", Platform.ANY);
-		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
+		capabilities.setCapability("securityToken", PerfectoLabUtils.fetchSecurityToken(securityToken));
 		capabilities.setCapability("enableAppiumBehavior", true);
 		capabilities.setCapability("model", "Galaxy S10");
 		capabilities.setCapability("platformName", "Android");
@@ -46,7 +45,7 @@ public class Perfecto_OTP_Sample {
 		capabilities.setCapability("appPackage", "com.samsung.android.messaging");
 		capabilities.setCapability("autoLaunch",true); 
 		try{
-			driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + Utils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
+			driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
 			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		}catch(Exception e){
 			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString() + " Exception: " + e.getMessage());
@@ -54,7 +53,7 @@ public class Perfecto_OTP_Sample {
 
 		//		Driver 2
 		capabilities = new DesiredCapabilities("", "", Platform.ANY);
-		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
+		capabilities.setCapability("securityToken", PerfectoLabUtils.fetchSecurityToken(securityToken));
 		capabilities.setCapability("enableAppiumBehavior", true);
 		//Make sure to select a device with phone number!!!!
 		capabilities.setCapability("description", "iPhoneWithSim");
@@ -63,16 +62,16 @@ public class Perfecto_OTP_Sample {
 		capabilities.setCapability("bundleId", "com.apple.MobileSMS");
 		capabilities.setCapability("autoLaunch",true); 
 		try{
-			driver2 = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + Utils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
+			driver2 = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
 			driver2.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		}catch(Exception e){
 			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString() + " Exception: " + e.getMessage());
 		}
-		String phoneNumber = Utils.getDevicePhoneNumber(driver2);
+		String phoneNumber = PerfectoLabUtils.getDevicePhoneNumber(driver2);
 
 		WebDriverWait wait = new WebDriverWait(driver, 60);
-		reportiumClient = Utils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
-		reportiumClient2 = Utils.setReportiumClient(driver2, reportiumClient); //Creates reportiumClient
+		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
+		reportiumClient2 = PerfectoLabUtils.setReportiumClient(driver2, reportiumClient); //Creates reportiumClient
 		reportiumClient.testStart("send SMS", new TestContext("tag1")); //Starts the reportium test
 		reportiumClient2.testStart("check SMS", new TestContext("tag2")); //Starts the reportium test
 

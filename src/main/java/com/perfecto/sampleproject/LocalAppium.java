@@ -1,15 +1,11 @@
 package com.perfecto.sampleproject;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.DriverCommand;
-import org.openqa.selenium.remote.RemoteExecuteMethod;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.Test;
 
@@ -39,7 +35,7 @@ public class LocalAppium {
 		driver.findElement(By.xpath("//*[contains(@resource-id,':id/collpasing_app_bar_extended_title') or contains(@resource-id,'settings:id/search')] | //*[contains(@text,'Search') | //*[@content-desc='Search']]")).isDisplayed();
 		driver.findElement(By.xpath("//*[contains(@text,'Data usage')]")).click();
 		WebElement data = driver.findElement(By.xpath("//*[contains(@resource-id, 'action_bar')]//*[@text='Data usage']"));
-		Utils.assertText(data, null, "Data usage");
+		PerfectoLabUtils.assertText(data, null, "Data usage");
 		driver.quit();
 	}
 

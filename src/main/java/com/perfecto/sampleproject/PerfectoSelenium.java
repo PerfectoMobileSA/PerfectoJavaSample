@@ -1,5 +1,5 @@
 package com.perfecto.sampleproject;
-import com.perfecto.sampleproject.Utils;
+import com.perfecto.sampleproject.PerfectoLabUtils;
 
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -32,19 +32,19 @@ public class PerfectoSelenium {
 		//Mobile: Auto generate capabilities for device selection: https://developers.perfectomobile.com/display/PD/Select+a+device+for+manual+testing#Selectadeviceformanualtesting-genCapGeneratecapabilities
 		String browserName = "mobileOS";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
-		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
+		capabilities.setCapability("securityToken", PerfectoLabUtils.fetchSecurityToken(securityToken));
 		capabilities.setCapability("platformName", "Android");
 		capabilities.setCapability("useAppiumForWeb", true);
 
 		try{
-			driver = new RemoteWebDriver(new URL("https://" + Utils.fetchCloudName(cloudName) + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
+			driver = new RemoteWebDriver(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName) + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
 			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
 		}catch(SessionNotCreatedException e){
 			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString());
 		}
 
-		reportiumClient = Utils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
+		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
 		reportiumClient.testStart("Perfecto mobile web test", new TestContext("tag2", "tag3")); //Starts the reportium test
 		reportiumClient.stepStart("browser navigate to perfecto"); //Starts a reportium step
 		driver.get("https://www.perfecto.io");
@@ -52,7 +52,7 @@ public class PerfectoSelenium {
 
 		reportiumClient.stepStart("Verify title");
 		String aTitle = driver.getTitle();
-		Utils.assertTitle(aTitle, reportiumClient); //compare the actual title with the expected title
+		PerfectoLabUtils.assertTitle(aTitle, reportiumClient); //compare the actual title with the expected title
 		reportiumClient.stepEnd();
 	}
 
@@ -65,7 +65,7 @@ public class PerfectoSelenium {
 
 		//Web: Auto generate capabilities for device selection: https://developers.perfectomobile.com/display/PD/Select+a+device+for+manual+testing#Selectadeviceformanualtesting-genCapGeneratecapabilities
 		DesiredCapabilities capabilities = new DesiredCapabilities("", "", Platform.ANY);
-		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
+		capabilities.setCapability("securityToken", PerfectoLabUtils.fetchSecurityToken(securityToken));
 		capabilities.setCapability("platformName", "Windows");
 		capabilities.setCapability("platformVersion", "10");
 		capabilities.setCapability("browserName", "Chrome");
@@ -75,14 +75,14 @@ public class PerfectoSelenium {
 
 
 		try{
-			driver = new RemoteWebDriver(new URL("https://" + Utils.fetchCloudName(cloudName) + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
+			driver = new RemoteWebDriver(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName) + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
 			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
 		}catch(SessionNotCreatedException e){
 			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString());
 		}
 
-		reportiumClient = Utils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
+		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
 		reportiumClient.testStart("Perfecto mobile web test", new TestContext("tag2", "tag3")); //Starts the reportium test
 		reportiumClient.stepStart("browser navigate to perfecto"); //Starts a reportium step
 		driver.get("https://www.perfecto.io");
@@ -90,7 +90,7 @@ public class PerfectoSelenium {
 
 		reportiumClient.stepStart("Verify title");
 		String aTitle = driver.getTitle();
-		Utils.assertTitle(aTitle, reportiumClient); //compare the actual title with the expected title
+		PerfectoLabUtils.assertTitle(aTitle, reportiumClient); //compare the actual title with the expected title
 		reportiumClient.stepEnd();
 	}
 

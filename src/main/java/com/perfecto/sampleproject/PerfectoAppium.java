@@ -5,23 +5,21 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.SessionNotCreatedException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 import com.perfecto.reportium.client.ReportiumClient;
-import com.perfecto.reportium.client.ReportiumClientFactory;
-import com.perfecto.reportium.model.Job;
-import com.perfecto.reportium.model.PerfectoExecutionContext;
-import com.perfecto.reportium.model.Project;
 import com.perfecto.reportium.test.TestContext;
 import com.perfecto.reportium.test.result.TestResult;
 import com.perfecto.reportium.test.result.TestResultFactory;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidElement;
 
 public class PerfectoAppium {
 	RemoteWebDriver driver;
@@ -33,34 +31,59 @@ public class PerfectoAppium {
 		String cloudName = "<<cloud name>>";
 		//Replace <<security token>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
 		String securityToken = "<<security token>>";
-
-		//A sample perfecto connect appium script to connect with a perfecto android device and perform addition validation in calculator app.
+		cloudName = PerfectoLabUtils.fetchCloudName(cloudName);
+		securityToken = PerfectoLabUtils.fetchSecurityToken(securityToken);
+		// Perfecto Media repository path 
+		String repositoryKey = "PRIVATE:ExpenseTracker/Native/android/ExpenseAppVer1.0.apk";
+		// Local apk/ipa file path
+		String localFilePath = System.getProperty("user.dir") + "//libs//ExpenseAppVer1.0.apk";
+		// Uploads local apk file to Media repository
+		PerfectoLabUtils.uploadMedia(cloudName, securityToken, localFilePath, repositoryKey);
 		//Auto generate capabilities for device selection: Auto generate capabilities: https://developers.perfectomobile.com/display/PD/Select+a+device+for+manual+testing#Selectadeviceformanualtesting-genCapGeneratecapabilities
 		String browserName = "mobileOS";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
-		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
+		capabilities.setCapability("securityToken", securityToken);
 		capabilities.setCapability("model", "Galaxy S.*");
 		capabilities.setCapability("enableAppiumBehavior", true);
 		capabilities.setCapability("openDeviceTimeout", 2);
-		capabilities.setCapability("appPackage", "com.android.settings");
-		capabilities.setCapability("appActivity", "com.android.settings.Settings");	
+		capabilities.setCapability("app", repositoryKey); // Set Perfecto Media repository path of App under test.
+		capabilities.setCapability("appPackage", "io.perfecto.expense.tracker"); // Set the unique identifier of your app
+		capabilities.setCapability("autoLaunch", true); // Whether to install and launch the app automatically.
+		capabilities.setCapability("autoInstrument", true); // To work with hybrid applications, install the iOS/Android application as instrumented.
+		capabilities.setCapability("takesScreenshot", false);
+		capabilities.setCapability("screenshotOnError", true);
 		try{
-			driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + Utils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
+			driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + cloudName  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
 			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		}catch(SessionNotCreatedException e){
 			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString());
 		}
 
-		reportiumClient = Utils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
-		reportiumClient.testStart("My Settings Test", new TestContext("tag2", "tag3")); //Starts the reportium test
+		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
+		reportiumClient.testStart("Sample Java Project", new TestContext("tag2", "tag3")); //Starts the reportium test
 
-		reportiumClient.stepStart("Verify Settings App is loaded"); //Starts a reportium step
-		driver.findElement(By.xpath("//*[contains(@resource-id,':id/collpasing_app_bar_extended_title') or contains(@resource-id,'settings:id/search')] | //*[contains(@text,'Search')] | //*[@content-desc='Search']")).isDisplayed();
-		reportiumClient.stepEnd(); //Stops a reportium step
+		reportiumClient.stepStart("Enter email");
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		AndroidElement email = (AndroidElement) wait.until(ExpectedConditions.elementToBeClickable(
+				driver.findElement(By.id("login_email"))));
+		email.sendKeys("test@perfecto.com");
+		reportiumClient.stepEnd();
 
-		reportiumClient.stepStart("Verify Airplane mode is displayed");
-		WebElement data = driver.findElement(By.xpath("//*[contains(@text,'Airplane mode')]"));
-		Utils.assertContainsText(data, reportiumClient, "Airplane mode");
+		reportiumClient.stepStart("Enter password");
+		AndroidElement password = (AndroidElement) wait.until(ExpectedConditions.elementToBeClickable(
+				driver.findElement(By.id("login_password"))));
+		password.sendKeys("test123");
+		reportiumClient.stepEnd();
+
+		reportiumClient.stepStart("Click login");
+		AndroidElement login = (AndroidElement) wait.until(ExpectedConditions.elementToBeClickable(
+				driver.findElement(By.id("login_login_btn"))));
+		login.click();
+		reportiumClient.stepEnd();
+
+		reportiumClient.stepStart("Login Successful");
+		wait.until(ExpectedConditions.elementToBeClickable(
+				driver.findElement(By.id("list_add_btn"))));
 		reportiumClient.stepEnd();
 	}
 

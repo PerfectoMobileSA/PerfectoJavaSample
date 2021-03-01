@@ -16,11 +16,9 @@ import com.perfecto.reportium.client.ReportiumClient;
 import com.perfecto.reportium.test.TestContext;
 import com.perfecto.reportium.test.result.TestResult;
 import com.perfecto.reportium.test.result.TestResultFactory;
-import com.perfecto.sampleproject.Utils;
+import com.perfecto.sampleproject.PerfectoLabUtils;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
-import io.appium.java_client.ios.IOSDriver;
 
 public class PerfectoAppium_Native {
 	RemoteWebDriver driver;
@@ -34,7 +32,7 @@ public class PerfectoAppium_Native {
 	
 		//A sample perfecto connect appium script to connect with a perfecto iOS device in a sample native app.
 		DesiredCapabilities capabilities = new DesiredCapabilities("", "", Platform.ANY);
-		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
+		capabilities.setCapability("securityToken", PerfectoLabUtils.fetchSecurityToken(securityToken));
 		capabilities.setCapability("model", "iPhone.*");
 		capabilities.setCapability("platformVersion", "13.*");
 		capabilities.setCapability("platformName", "iOS");
@@ -47,18 +45,18 @@ public class PerfectoAppium_Native {
 		capabilities.setCapability("autoInstrument", true);
 
 		try{
-			driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + Utils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
+			driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
 			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		}catch(SessionNotCreatedException e){
 			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString());
 		}
 
-		reportiumClient = Utils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
+		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
 		reportiumClient.testStart("Sample Invoice App", new TestContext("tag2", "tag3")); //Starts the reportium test
 
 		reportiumClient.stepStart("Verify Sample App is loaded"); //Starts a reportium step
 		WebElement email = driver.findElement(By.xpath("//*[@label='Email']"));
-		Utils.assertText(email, reportiumClient, "Email");
+		PerfectoLabUtils.assertText(email, reportiumClient, "Email");
 		reportiumClient.stepEnd(); //Stops a reportium step
 
 		reportiumClient.stepStart("Perform Login"); 
@@ -67,13 +65,13 @@ public class PerfectoAppium_Native {
 		driver.findElement(By.xpath("//*[@name='login_password']")).sendKeys("test123");
 		driver.findElement(By.xpath("//*[@name='Login']")).click();
 		WebElement expense = driver.findElement(By.xpath("//*[@label='Expenses']"));
-		Utils.assertText(expense, reportiumClient, "Expenses");
+		PerfectoLabUtils.assertText(expense, reportiumClient, "Expenses");
 		reportiumClient.stepEnd(); 
 
 		reportiumClient.stepStart("Add an item");
 		driver.findElement(By.xpath("//*[@name='list_add_btn']")).click();
 		WebElement head_lbl = driver.findElement(By.xpath("//*[@label='Head']"));
-		Utils.assertText(head_lbl, reportiumClient, "Head");
+		PerfectoLabUtils.assertText(head_lbl, reportiumClient, "Head");
 	}
 
 	@AfterMethod

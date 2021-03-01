@@ -21,7 +21,7 @@ import com.perfecto.reportium.client.ReportiumClient;
 import com.perfecto.reportium.test.TestContext;
 import com.perfecto.reportium.test.result.TestResult;
 import com.perfecto.reportium.test.result.TestResultFactory;
-import com.perfecto.sampleproject.Utils;
+import com.perfecto.sampleproject.PerfectoLabUtils;
 
 import io.appium.java_client.AppiumDriver;
 
@@ -45,21 +45,21 @@ public class Audio_To_Text {
 		// device and perform addition validation in calculator app.
 		String browserName = "mobileOS";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
-		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
+		capabilities.setCapability("securityToken", PerfectoLabUtils.fetchSecurityToken(securityToken));
 		capabilities.setCapability("platformName", "Android");
 		capabilities.setCapability("enableAppiumBehavior", true);
 		capabilities.setCapability("openDeviceTimeout", 2);
 		capabilities.setCapability("appPackage", "com.android.settings");
 		capabilities.setCapability("appActivity", "com.android.settings.Settings");
 		try {
-			driver = (RemoteWebDriver) (new AppiumDriver<>(new URL("https://" + Utils.fetchCloudName(cloudName)
+			driver = (RemoteWebDriver) (new AppiumDriver<>(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)
 					+ ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities));
 			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		} catch (SessionNotCreatedException e) {
 			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString());
 		}
 
-		reportiumClient = Utils.setReportiumClient(driver, reportiumClient); // Creates reportiumClient
+		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); // Creates reportiumClient
 		reportiumClient.testStart("Audio_2_Text", new TestContext("audio"));
 		reportiumClient.stepStart("audio to text");
 
