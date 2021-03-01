@@ -27,9 +27,9 @@ public class PerfectoAppium {
 
 	@Test
 	public void appiumTest() throws Exception {
-		//Replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it as maven properties: -DcloudName=<<cloud name>>  
+		// Replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it as maven properties: -DcloudName=<<cloud name>>  
 		String cloudName = "<<cloud name>>";
-		//Replace <<security token>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
+		// Replace <<security token>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
 		String securityToken = "<<security token>>";
 		cloudName = PerfectoLabUtils.fetchCloudName(cloudName);
 		securityToken = PerfectoLabUtils.fetchSecurityToken(securityToken);
@@ -39,7 +39,7 @@ public class PerfectoAppium {
 		String localFilePath = System.getProperty("user.dir") + "//libs//ExpenseAppVer1.0.apk";
 		// Uploads local apk file to Media repository
 		PerfectoLabUtils.uploadMedia(cloudName, securityToken, localFilePath, repositoryKey);
-		//Auto generate capabilities for device selection: Auto generate capabilities: https://developers.perfectomobile.com/display/PD/Select+a+device+for+manual+testing#Selectadeviceformanualtesting-genCapGeneratecapabilities
+		// Auto generate capabilities for device selection: Auto generate capabilities: https://developers.perfectomobile.com/display/PD/Select+a+device+for+manual+testing#Selectadeviceformanualtesting-genCapGeneratecapabilities
 		String browserName = "mobileOS";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
 		capabilities.setCapability("securityToken", securityToken);
