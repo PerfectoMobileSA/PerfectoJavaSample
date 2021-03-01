@@ -51,7 +51,7 @@ public class PerfectoAppium {
 		capabilities.setCapability("autoLaunch", true); // Whether to install and launch the app automatically.
 		capabilities.setCapability("autoInstrument", true); // To work with hybrid applications, install the iOS/Android application as instrumented.
 		capabilities.setCapability("takesScreenshot", false);
-		capabilities.setCapability("screenshotOnError", true);
+		capabilities.setCapability("screenshotOnError", true); // Take screenshot only on errors
 		try{
 			driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + cloudName  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
 			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
@@ -60,7 +60,7 @@ public class PerfectoAppium {
 		}
 
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
-		reportiumClient.testStart("Sample Java Project", new TestContext("tag2", "tag3")); //Starts the reportium test
+		reportiumClient.testStart("Sample Java Native project", new TestContext("tag2", "tag3")); //Starts the reportium test
 
 		reportiumClient.stepStart("Enter email");
 		WebDriverWait wait = new WebDriverWait(driver, 30);
