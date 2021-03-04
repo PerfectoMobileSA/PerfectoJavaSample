@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Platform;
-import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -41,13 +40,8 @@ public class PerfectoAppiumiOSTurnOffWifi {
 		capabilities.setCapability("enableAppiumBehavior", true);
 		capabilities.setCapability("openDeviceTimeout", 2);
 		capabilities.setCapability("bundleId", "com.apple.mobilesafari");
-		try{
-			driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
-			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-		}catch(SessionNotCreatedException e){
-			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString());
-		}
-
+		driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
 		reportiumClient.testStart("My iOS wifi turn on & off Test", new TestContext("tag2", "tag3")); //Starts the reportium test
 

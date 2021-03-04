@@ -1,5 +1,4 @@
 package com.perfecto.sampleproject;
-import com.perfecto.sampleproject.PerfectoLabUtils;
 
 import java.net.URL;
 import java.util.concurrent.TimeUnit;

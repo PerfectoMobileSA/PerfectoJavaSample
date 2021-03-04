@@ -11,9 +11,9 @@
 			<class name="com.perfecto.sampleproject.PerfectoSelenium" />
 		</classes>
 	</test> <!-- Test -->
-	<test name="PerfectoNative" enabled="true">
+	<test name="PerfectoNativeiOS" enabled="true">
 		<classes>
-			<class name="com.perfecto.advanced.PerfectoAppium_Native" />
+			<class name="com.perfecto.sampleproject.PerfectoAppiumiOS" />
 		</classes>
 	</test> <!-- Test -->
 		<test name="OTP Sample" enabled="true">
@@ -29,6 +29,16 @@
 		<test name="Wifi turn off On" enabled="true">
 		<classes>
 			<class name="com.perfecto.advanced.PerfectoAppiumiOSTurnOffWifi" />
+		</classes>
+	</test> <!-- Test -->
+		<test name="Emulator" enabled="true">
+		<classes>
+			<class name="com.perfecto.virtualdevices.PerfectoEmulatorAppium" />
+		</classes>
+	</test> <!-- Test -->
+	<test name="Simulator" enabled="true">
+		<classes>
+			<class name="com.perfecto.virtualdevices.PerfectoSimulatorAppium" />
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

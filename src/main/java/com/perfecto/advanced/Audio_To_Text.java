@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Platform;
-import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestResult;
@@ -51,14 +50,9 @@ public class Audio_To_Text {
 		capabilities.setCapability("openDeviceTimeout", 2);
 		capabilities.setCapability("appPackage", "com.android.settings");
 		capabilities.setCapability("appActivity", "com.android.settings.Settings");
-		try {
-			driver = (RemoteWebDriver) (new AppiumDriver<>(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)
-					+ ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities));
-			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-		} catch (SessionNotCreatedException e) {
-			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString());
-		}
-
+		driver = (RemoteWebDriver) (new AppiumDriver<>(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)
+				+ ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities));
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); // Creates reportiumClient
 		reportiumClient.testStart("Audio_2_Text", new TestContext("audio"));
 		reportiumClient.stepStart("audio to text");

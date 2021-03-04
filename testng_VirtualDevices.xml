@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite" parallel="tests">
+	<test name="Emulator" enabled="false">
+		<classes>
+			<class
+				name="com.perfecto.virtualdevices.PerfectoEmulatorAppium" />
+		</classes>
+	</test> <!-- Test -->
+
+	<test name="Simulator" enabled="false">
+		<classes>
+			<class
+				name="com.perfecto.virtualdevices.PerfectoSimulatorAppium" />
+		</classes>
+	</test> <!-- Test -->
+
+	<test name="LocalEmulator" enabled="false">
+		<classes>
+			<class
+				name="com.perfecto.virtualdevices.LocalEmulatorAppium" />
+		</classes>
+	</test> <!-- Test -->
+
+	<test name="LocalSimulator" enabled="true">
+		<classes>
+			<class
+				name="com.perfecto.virtualdevices.LocalSimulatorAppium" />
+		</classes>
+	</test> <!-- Test -->
+	
+</suite> <!-- Suite -->

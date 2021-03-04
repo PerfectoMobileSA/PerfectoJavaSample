@@ -4,9 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Platform;
-import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
@@ -18,11 +16,11 @@ import com.perfecto.reportium.test.TestContext;
 import com.perfecto.reportium.test.result.TestResult;
 import com.perfecto.reportium.test.result.TestResultFactory;
 
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 public class PerfectoAppium {
-	RemoteWebDriver driver;
+	AndroidDriver<AndroidElement> driver;
 	ReportiumClient reportiumClient;
 
 	@Test
@@ -52,15 +50,11 @@ public class PerfectoAppium {
 		capabilities.setCapability("autoInstrument", true); // To work with hybrid applications, install the iOS/Android application as instrumented.
 		capabilities.setCapability("takesScreenshot", false);
 		capabilities.setCapability("screenshotOnError", true); // Take screenshot only on errors
-		try{
-			driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + cloudName  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
-			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-		}catch(SessionNotCreatedException e){
-			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString());
-		}
-
+		driver = new AndroidDriver<AndroidElement>(new URL("https://" + cloudName  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities); 
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
-		reportiumClient.testStart("Sample Java Native project", new TestContext("tag2", "tag3")); //Starts the reportium test
+		reportiumClient.testStart("Android Java Native Sample", new TestContext("tag2", "tag3")); //Starts the reportium test
 
 		reportiumClient.stepStart("Enter email");
 		WebDriverWait wait = new WebDriverWait(driver, 30);
