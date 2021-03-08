@@ -27,8 +27,10 @@ public class PerfectoAppiumiOS {
 	public void appiumTest() throws Exception {
 		// Replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it as maven properties: -DcloudName=<<cloud name>>  
 		String cloudName = "<<cloud name>>";
+		
 		// Replace <<security token>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
 		String securityToken = "<<security token>>";
+		
 		cloudName = PerfectoLabUtils.fetchCloudName(cloudName);
 		securityToken = PerfectoLabUtils.fetchSecurityToken(securityToken);
 		// Perfecto Media repository path 
@@ -37,13 +39,13 @@ public class PerfectoAppiumiOS {
 		String localFilePath = System.getProperty("user.dir") + "//libs//InvoiceApp1.0.ipa";
 		// Uploads local apk file to Media repository
 		PerfectoLabUtils.uploadMedia(cloudName, securityToken, localFilePath, repositoryKey);
+		
 		DesiredCapabilities capabilities = new DesiredCapabilities("", "", Platform.ANY);
 		capabilities.setCapability("securityToken", securityToken);
 		capabilities.setCapability("platformName", "iOS");
 		capabilities.setCapability("model", "iPhone.*");
 		capabilities.setCapability("manufacturer", "Apple");
 		capabilities.setCapability("app", repositoryKey);
-
 		// Set other capabilities.
 		capabilities.setCapability("enableAppiumBehavior", true);
 		capabilities.setCapability("autoLaunch", true); // Whether to install and launch the app automatically.
@@ -53,9 +55,10 @@ public class PerfectoAppiumiOS {
 		capabilities.setCapability("screenshotOnError", true);
 		capabilities.setCapability("openDeviceTimeout", 5);
 		capabilities.setCapability("bundleId", "io.perfecto.expense.tracker"); 
-
+		
 		driver = new IOSDriver<IOSElement>(new URL("https://" + cloudName  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities); 
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); 
 		reportiumClient.testStart("Native Java iOS Sample", new TestContext("tag2", "tag3")); 
 

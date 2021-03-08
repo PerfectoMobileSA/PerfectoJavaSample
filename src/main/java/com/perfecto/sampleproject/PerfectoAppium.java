@@ -27,8 +27,10 @@ public class PerfectoAppium {
 	public void appiumTest() throws Exception {
 		// Replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it as maven properties: -DcloudName=<<cloud name>>  
 		String cloudName = "<<cloud name>>";
+		
 		// Replace <<security token>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
 		String securityToken = "<<security token>>";
+		
 		cloudName = PerfectoLabUtils.fetchCloudName(cloudName);
 		securityToken = PerfectoLabUtils.fetchSecurityToken(securityToken);
 		// Perfecto Media repository path 
@@ -37,6 +39,7 @@ public class PerfectoAppium {
 		String localFilePath = System.getProperty("user.dir") + "//libs//ExpenseAppVer1.0.apk";
 		// Uploads local apk file to Media repository
 		PerfectoLabUtils.uploadMedia(cloudName, securityToken, localFilePath, repositoryKey);
+		
 		// Auto generate capabilities for device selection: Auto generate capabilities: https://developers.perfectomobile.com/display/PD/Select+a+device+for+manual+testing#Selectadeviceformanualtesting-genCapGeneratecapabilities
 		String browserName = "mobileOS";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
@@ -50,6 +53,7 @@ public class PerfectoAppium {
 		capabilities.setCapability("autoInstrument", true); // To work with hybrid applications, install the iOS/Android application as instrumented.
 		capabilities.setCapability("takesScreenshot", false);
 		capabilities.setCapability("screenshotOnError", true); // Take screenshot only on errors
+		
 		driver = new AndroidDriver<AndroidElement>(new URL("https://" + cloudName  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities); 
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		
