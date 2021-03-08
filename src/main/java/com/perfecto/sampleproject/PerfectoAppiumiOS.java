@@ -40,6 +40,7 @@ public class PerfectoAppiumiOS {
 		// Uploads local apk file to Media repository
 		PerfectoLabUtils.uploadMedia(cloudName, securityToken, localFilePath, repositoryKey);
 		
+		//Mobile: Auto generate capabilities for device selection: https://developers.perfectomobile.com/display/PD/Select+a+device+for+manual+testing#Selectadeviceformanualtesting-genCapGeneratecapabilities
 		DesiredCapabilities capabilities = new DesiredCapabilities("", "", Platform.ANY);
 		capabilities.setCapability("securityToken", securityToken);
 		capabilities.setCapability("platformName", "iOS");
@@ -55,6 +56,9 @@ public class PerfectoAppiumiOS {
 		capabilities.setCapability("screenshotOnError", true);
 		capabilities.setCapability("openDeviceTimeout", 5);
 		capabilities.setCapability("bundleId", "io.perfecto.expense.tracker"); 
+		
+		// The below capability is mandatory. Please do not replace it.
+		capabilities.setCapability("securityToken", securityToken);
 		
 		driver = new IOSDriver<IOSElement>(new URL("https://" + cloudName  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities); 
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
