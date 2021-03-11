@@ -43,7 +43,7 @@ public class PerfectoSelenium {
 		driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
 
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
-		reportiumClient.testStart("Perfecto mobile web test", new TestContext("tag2", "tag3")); //Starts the reportium test
+		reportiumClient.testStart("Perfecto Android mobile web test", new TestContext("tag2", "tag3")); //Starts the reportium test
 		reportiumClient.stepStart("browser navigate to perfecto"); //Starts a reportium step
 		driver.get("https://www.perfecto.io");
 		reportiumClient.stepEnd();
@@ -72,7 +72,7 @@ public class PerfectoSelenium {
 		driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
 
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
-		reportiumClient.testStart("Perfecto mobile web test", new TestContext("tag2", "tag3")); //Starts the reportium test
+		reportiumClient.testStart("Perfecto iOS mobile web test", new TestContext("tag2", "tag3")); //Starts the reportium test
 		reportiumClient.stepStart("browser navigate to perfecto"); //Starts a reportium step
 		driver.get("https://www.perfecto.io");
 		reportiumClient.stepEnd();
@@ -102,7 +102,7 @@ public class PerfectoSelenium {
 		driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
 
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient
-		reportiumClient.testStart("Perfecto mobile web test", new TestContext("tag2", "tag3")); //Starts the reportium test
+		reportiumClient.testStart("Perfecto desktop web test", new TestContext("tag2", "tag3")); //Starts the reportium test
 		reportiumClient.stepStart("browser navigate to perfecto"); //Starts a reportium step
 		driver.get("https://www.perfecto.io");
 		reportiumClient.stepEnd();

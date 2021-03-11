@@ -45,7 +45,7 @@ public class PerfectoSimulatorAppium {
 		capabilities.setCapability("manufacturer", "Apple");
 		capabilities.setCapability("model", "iPhone 11");
         capabilities.setCapability("useVirtualDevice", true);
-		capabilities.setCapability("app", repositoryKey); 
+        capabilities.setCapability("app", repositoryKey); 
 		capabilities.setCapability("bundleId", "io.perfecto.expense.tracker"); 
 
 		driver = new IOSDriver<IOSElement>(new URL("https://" + cloudName  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities); 
