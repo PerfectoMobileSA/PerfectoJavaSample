@@ -1,5 +1,7 @@
 package com.perfecto.virtualdevices;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -11,6 +13,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
+import com.google.common.collect.ImmutableMap;
 import com.perfecto.reportium.client.ReportiumClient;
 import com.perfecto.reportium.test.TestContext;
 import com.perfecto.reportium.test.result.TestResult;
@@ -23,7 +26,8 @@ import io.appium.java_client.android.AndroidElement;
 public class PerfectoEmulatorAppium {
 	AndroidDriver<AndroidElement> driver;
 	ReportiumClient reportiumClient;
-
+	Boolean debug = false;
+	
 	@Test
 	public void appiumTest() throws Exception {
 		// Replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it as maven properties: -DcloudName=<<cloud name>>  
@@ -38,6 +42,7 @@ public class PerfectoEmulatorAppium {
 		String localFilePath = System.getProperty("user.dir") + "//libs//ExpenseAppVer1.0.apk";
 		// Uploads local apk file to Media repository
 		PerfectoLabUtils.uploadMedia(cloudName, securityToken, localFilePath, repositoryKey);
+//		PerfectoLabUtils.uploadMedia_NewAPI(cloudName, securityToken, localFilePath, repositoryKey);
 		DesiredCapabilities capabilities = new DesiredCapabilities("", "", Platform.ANY);
 		capabilities.setCapability("securityToken", securityToken);
 		capabilities.setCapability("deviceName", "pixel 4");
@@ -51,7 +56,18 @@ public class PerfectoEmulatorAppium {
 			
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); 
 		reportiumClient.testStart("Native Java Emulator Sample", new TestContext("tag2", "tag3")); 
-
+		
+		// Installs and opens app if Device session sharing is enabled.
+		if(debug == true) {
+			Map<String, Object> params = new HashMap<>();
+			params.put("file", repositoryKey);
+			driver.executeScript("mobile:application:install", params); 
+			
+			params.put("identifier", "io.perfecto.expense.tracker");
+			driver.executeScript("mobile:application:open", params);
+			driver.context("NATIVE_APP");
+		}
+		
 		reportiumClient.stepStart("Enter email");
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		AndroidElement email = (AndroidElement) wait.until(ExpectedConditions.elementToBeClickable(
@@ -88,7 +104,10 @@ public class PerfectoEmulatorAppium {
 		}
 		reportiumClient.testStop(testResult);
 
-		driver.quit();
+		// Skips closing the emulator for debugging session.
+		if(!(debug)) {
+			driver.quit();
+		}
 		// Retrieve the URL to the DigitalZoom Report 
 		String reportURL = reportiumClient.getReportUrl();
 		System.out.println(reportURL);
