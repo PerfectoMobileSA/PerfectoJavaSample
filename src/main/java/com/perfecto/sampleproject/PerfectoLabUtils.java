@@ -13,11 +13,25 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.StopWatch;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.JSONObject;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -213,9 +227,16 @@ public class PerfectoLabUtils {
 	 * uploadMedia("demo.", "securityToken", "C:\\test\\ApiDemos.apk", "PRIVATE:apps/ApiDemos.apk");
 	 */
 	public static void uploadMedia(String cloudName, String securityToken, String path, String repositoryKey) throws IOException {
+		StopWatch stopwatch = new StopWatch();
+		stopwatch.start();
+		
+		System.out.println("Upload Started");	
 		File file = new File(path);
 		byte[] content = readFile(file);
 		uploadMedia(cloudName, securityToken, content, repositoryKey);
+		stopwatch.stop();
+		long x = stopwatch.getTime();
+		System.out.println("Upload Time = " + Long.toString(x));
 	}
 
 	/**
@@ -332,4 +353,42 @@ public class PerfectoLabUtils {
 		}
 	}
 	
+	/**
+	 * Uploads a file to the media repository.
+	 * Example:
+	 * uploadMedia("demo", "securityToken", "C:\\test\\ApiDemos.apk", "PRIVATE:apps/ApiDemos.apk");
+	 * @throws URISyntaxException 
+	 */
+	public static void uploadMedia_NewAPI(String cloudName, String securityToken, String path, String artifactLocator) throws URISyntaxException, ClientProtocolException, IOException {
+			
+		  StopWatch stopwatch = new StopWatch();
+		  stopwatch.start();
+		
+		  System.out.println("Upload Started");		  
+	  	  URIBuilder taskUriBuilder = new URIBuilder("https://" + cloudName + ".app.perfectomobile.com/repository/api/v1/artifacts");
+		  HttpClient httpClient = HttpClientBuilder.create().build();
+	  	  HttpPost httppost = new HttpPost(taskUriBuilder.build());
+	      httppost.setHeader("Perfecto-Authorization", securityToken);
+	     
+	      MultipartEntityBuilder mpEntity = MultipartEntityBuilder.create();
+	      File packagedFile = new File(path);
+	      ContentBody inputStream = new FileBody(packagedFile, ContentType.APPLICATION_OCTET_STREAM);
+	     
+	      JSONObject req = new JSONObject();
+	      req.put("artifactLocator", artifactLocator);
+	      req.put("override", true);
+	      String rp = req.toString();
+	     
+	      ContentBody requestPart = new StringBody(rp, ContentType.APPLICATION_JSON);
+	      mpEntity.addPart("inputStream", inputStream);
+	      mpEntity.addPart("requestPart", requestPart);
+	      httppost.setEntity(mpEntity.build());
+	      HttpResponse response = httpClient.execute(httppost);
+	      int statusCode = response.getStatusLine().getStatusCode();
+	      
+	      stopwatch.stop();
+	      long x = stopwatch.getTime();
+	      System.out.println("Status Code = " + statusCode);
+	      System.out.println("Upload Time = " + Long.toString(x));
+	}
 }
