@@ -42,7 +42,6 @@ public class PerfectoEmulatorAppium {
 		String localFilePath = System.getProperty("user.dir") + "//libs//ExpenseAppVer1.0.apk";
 		// Uploads local apk file to Media repository
 		PerfectoLabUtils.uploadMedia(cloudName, securityToken, localFilePath, repositoryKey);
-//		PerfectoLabUtils.uploadMedia_NewAPI(cloudName, securityToken, localFilePath, repositoryKey);
 		DesiredCapabilities capabilities = new DesiredCapabilities("", "", Platform.ANY);
 		capabilities.setCapability("securityToken", securityToken);
 		capabilities.setCapability("deviceName", "pixel 4");

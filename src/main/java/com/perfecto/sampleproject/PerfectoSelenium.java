@@ -61,6 +61,7 @@ public class PerfectoSelenium {
 		String browserName = "safari";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
 		capabilities.setCapability("platformName", "iOS");
+		capabilities.setCapability("model", "iPhone.*");
 		capabilities.setCapability("useAppiumForWeb", true);
 		capabilities.setCapability("openDeviceTimeout", 2);
 

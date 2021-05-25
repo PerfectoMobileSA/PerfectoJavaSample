@@ -79,6 +79,9 @@ public class Perfecto_OTP_Sample {
 		driver.findElement(to).sendKeys(phoneNumber);
 		Map<String, Object> params = new HashMap<>();
 		params.put("label", "Next");
+		// The following two parameters are added only because Next button has inverted colors
+		params.put("analysis", "Manual");
+		params.put("inverse", "Yes");
 		driver.executeScript("mobile:button-text:click", params);
 		WebElement msgTxt = driver.findElement(By.xpath("//*[@resource-id=\"com.samsung.android.messaging:id/message_edit_text\"]"));
 		wait.until(ExpectedConditions.elementToBeClickable(msgTxt));

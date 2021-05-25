@@ -226,14 +226,14 @@ public class PerfectoLabUtils {
 	 * Example:
 	 * uploadMedia("demo.", "securityToken", "C:\\test\\ApiDemos.apk", "PRIVATE:apps/ApiDemos.apk");
 	 */
-	public static void uploadMedia(String cloudName, String securityToken, String path, String repositoryKey) throws IOException {
+	public static void uploadMedia_OldAPI(String cloudName, String securityToken, String path, String repositoryKey) throws IOException {
 		StopWatch stopwatch = new StopWatch();
 		stopwatch.start();
 		
 		System.out.println("Upload Started");	
 		File file = new File(path);
 		byte[] content = readFile(file);
-		uploadMedia(cloudName, securityToken, content, repositoryKey);
+		uploadMedia_OldAPI(cloudName, securityToken, content, repositoryKey);
 		stopwatch.stop();
 		long x = stopwatch.getTime();
 		System.out.println("Upload Time = " + Long.toString(x));
@@ -245,9 +245,9 @@ public class PerfectoLabUtils {
 	 * URL url = new URL("http://file.appsapk.com/wp-content/uploads/downloads/Sudoku%20Free.apk");
 	 * uploadMedia("demo", "securityToken", url, "PRIVATE:apps/ApiDemos.apk");
 	 */
-	public static void uploadMedia(String cloudName, String securityToken, URL mediaURL, String repositoryKey) throws IOException {
+	public static void uploadMedia_OldAPI(String cloudName, String securityToken, URL mediaURL, String repositoryKey) throws IOException {
 		byte[] content = readURL(mediaURL);
-		uploadMedia(cloudName, securityToken, content, repositoryKey);
+		uploadMedia_OldAPI(cloudName, securityToken, content, repositoryKey);
 	}
 
 	/**
@@ -255,7 +255,7 @@ public class PerfectoLabUtils {
 	 * Example:
 	 * uploadMedia("demo", "securityToken", content, "PRIVATE:apps/ApiDemos.apk");
 	 */
-	public static void uploadMedia(String cloudName, String securityToken, byte[] content, String repositoryKey) throws UnsupportedEncodingException, MalformedURLException, IOException {
+	public static void uploadMedia_OldAPI(String cloudName, String securityToken, byte[] content, String repositoryKey) throws UnsupportedEncodingException, MalformedURLException, IOException {
 		if (content != null) {
 			String encodedSecurityToken = URLEncoder.encode(securityToken, "UTF-8");
 			String urlStr = HTTPS + cloudName + ".perfectomobile.com" + MEDIA_REPOSITORY + repositoryKey + "?" + UPLOAD_OPERATION + "&securityToken=" + encodedSecurityToken;
@@ -354,12 +354,12 @@ public class PerfectoLabUtils {
 	}
 	
 	/**
-	 * Uploads a file to the media repository.
+	 * Uploads a file to the media repository as per new API 
 	 * Example:
 	 * uploadMedia("demo", "securityToken", "C:\\test\\ApiDemos.apk", "PRIVATE:apps/ApiDemos.apk");
 	 * @throws URISyntaxException 
 	 */
-	public static void uploadMedia_NewAPI(String cloudName, String securityToken, String path, String artifactLocator) throws URISyntaxException, ClientProtocolException, IOException {
+	public static void uploadMedia(String cloudName, String securityToken, String path, String artifactLocator) throws URISyntaxException, ClientProtocolException, IOException {
 			
 		StopWatch stopwatch = new StopWatch();
 		stopwatch.start();
