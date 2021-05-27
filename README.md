@@ -19,8 +19,6 @@ There are several prerequisite dependencies you should install on your machine p
 
 * Local Appium Server running at http://127.0.0.1 ,  port: 4723
 
-* Download the OS specific chromedriver into libs folder of the project and update the  webdriver.chrome.driver as applicable
-
 Eclipse users should also install:
 
 1. [Maven Plugin](http://marketplace.eclipse.org/content/m2e-connector-maven-dependency-plugin)
@@ -46,9 +44,7 @@ TestNG Plugin is built-in in the IntelliJ IDEA, from version 7 onwards.
 **********************
 # Getting Started
 
-* Download the OS specific chromedriver into libs folder of the project and update the webdriver.chrome.driver system path where ever applicable
-
-* Local Appium Server should be running at http://127.0.0.1 ,  port: 4723
+* Local Appium prerequisite: Local Appium Server should be running at http://127.0.0.1 ,  port: 4723
 
 
 ## Running sample as is
