@@ -222,8 +222,6 @@
 			<artifactId>json</artifactId>
 			<version>20210307</version>
 		</dependency>
-
-		<!-- Perfecto Reporting SDK -->
 		<dependency>
 			<groupId>com.perfecto.reporting-sdk</groupId>
 			<artifactId>reportium-java</artifactId>
