@@ -40,7 +40,7 @@ public class PerfectoAppiumiOS {
 		// Uploads local apk file to Media repository
 		PerfectoLabUtils.uploadMedia(cloudName, securityToken, localFilePath, repositoryKey);
 		
-		//Mobile: Auto generate capabilities for device selection: https://developers.perfectomobile.com/display/PD/Select+a+device+for+manual+testing#Selectadeviceformanualtesting-genCapGeneratecapabilities
+		// Mobile: Auto generate capabilities for device selection: https://developers.perfectomobile.com/display/PD/Select+a+device+for+manual+testing#Selectadeviceformanualtesting-genCapGeneratecapabilities
 		DesiredCapabilities capabilities = new DesiredCapabilities("", "", Platform.ANY);
 		capabilities.setCapability("securityToken", securityToken);
 		capabilities.setCapability("platformName", "iOS");
@@ -48,14 +48,15 @@ public class PerfectoAppiumiOS {
 		capabilities.setCapability("manufacturer", "Apple");
 		capabilities.setCapability("app", repositoryKey);
 		// Set other capabilities.
+		capabilities.setCapability("bundleId", "io.perfecto.expense.tracker"); // Set your App's bundle Id here
 		capabilities.setCapability("enableAppiumBehavior", true);
 		capabilities.setCapability("autoLaunch", true); // Whether to install and launch the app automatically.
-		capabilities.setCapability("autoInstrument", true); // To work with hybrid applications, install the iOS/Android application as instrumented.
-		// capabilities.setCapability("fullReset", false); // Reset app state by  uninstalling app.
 		capabilities.setCapability("takesScreenshot", false);
 		capabilities.setCapability("screenshotOnError", true);
-		capabilities.setCapability("openDeviceTimeout", 5);
-		capabilities.setCapability("bundleId", "io.perfecto.expense.tracker"); 
+		capabilities.setCapability("openDeviceTimeout", 5); // Waits for 5 minutes before device connection timeout
+		capabilities.setCapability("iOSResign",true);  // https://help.perfecto.io/perfecto-help/content/perfecto/manual-testing/re_sign_an_application___ios.htm?Highlight=resign%20developer%20certificate
+		// capabilities.setCapability("autoInstrument", true); // To work with hybrid applications, install the iOS/Android application as instrumented.
+		// capabilities.setCapability("fullReset", false); // Reset app state by  uninstalling app.
 		
 		// The below capability is mandatory. Please do not replace it.
 		capabilities.setCapability("securityToken", securityToken);
