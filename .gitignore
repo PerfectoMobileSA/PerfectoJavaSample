@@ -24,3 +24,4 @@ build/
 .idea/
 output.txt
 src/main/java/com/perfecto/sampleproject/Temp.java
+temp.xml
