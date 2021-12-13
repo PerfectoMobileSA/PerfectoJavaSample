@@ -85,7 +85,7 @@ public class Perfecto_OTP_Sample {
 		msgTxt.isDisplayed();
 		msgTxt.click();
 		msgTxt.sendKeys(msg);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@content-desc='Send' and @enabled='true']"))).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@content-desc='Send' and @enabled='true'] | //*[contains(@resource-id,\"send_buttons\")]"))).click();
 		reportiumClient.stepEnd(); 
 
 		reportiumClient2.stepStart("Verify SMS in other device"); 
