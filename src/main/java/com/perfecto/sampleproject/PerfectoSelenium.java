@@ -62,7 +62,7 @@ public class PerfectoSelenium {
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
 		capabilities.setCapability("platformName", "iOS");
 		capabilities.setCapability("model", "iPhone.*");
-		capabilities.setCapability("useAppiumForWeb", true);
+		capabilities.setCapability("deviceStatus", "CONNECTED");
 		capabilities.setCapability("openDeviceTimeout", 2);
 
 		// The below capability is mandatory. Please do not replace it.
