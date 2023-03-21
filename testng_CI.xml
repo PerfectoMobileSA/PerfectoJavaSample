@@ -41,4 +41,9 @@
 			<class name="com.perfecto.virtualdevices.PerfectoSimulatorAppium" />
 		</classes>
 	</test> <!-- Test -->
+		<test name="performance" enabled="true">
+		<classes>
+			<class name="com.perfecto.advanced.Performance" />
+		</classes> <!-- Test -->
+	</test> 
 </suite> <!-- Suite -->
