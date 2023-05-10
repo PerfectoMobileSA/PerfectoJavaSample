@@ -39,7 +39,7 @@ public class Performance {
 		DesiredCapabilities capabilities = new DesiredCapabilities("mobileOS", "", Platform.ANY);
 		capabilities.setCapability("securityToken", PerfectoLabUtils.fetchSecurityToken(securityToken));
 		capabilities.setCapability("useAppiumForWeb", "true");
-		capabilities.setCapability("model", "Galaxy S10");
+		capabilities.setCapability("model", "Galaxy.*");
 		capabilities.setCapability("platformName", platformName);
 		capabilities.setCapability("openDeviceTimeout", 15);
 		capabilities.setCapability("appPackage", "com.samsung.android.messaging");
