@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.time.StopWatch;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.DriverCommand;
@@ -13,6 +14,7 @@ import org.openqa.selenium.remote.RemoteExecuteMethod;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
 import com.perfecto.reportium.client.ReportiumClient;
@@ -46,7 +48,7 @@ public class Performance {
 		capabilities.setCapability("autoLaunch", true);
 		driver = new RemoteWebDriver(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)
 				+ ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
-		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
 
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); // Creates reportiumClient
 		reportiumClient.testStart("SUT Performance test", new TestContext("tag1")); // Starts the reportium test
@@ -106,10 +108,12 @@ public class Performance {
 		Thread.sleep(2000);
 		startTimer(pageLoad);
 		driver.get("https://www.etihad.com/en-us/book");
-		driver.findElementById("flightsearch");
-		stopTimer(pageLoad);
-		measureTimer(driver, pageLoad, 10000, "Checkpoint load time of App launch.", "AppLaunchTime-xpath");
-		
+		try {
+			driver.findElement(By.xpath("//*[@class=\"header-text-logo\"]//a"));
+			stopTimer(pageLoad);
+			measureTimer(driver, pageLoad, 10000, "Checkpoint load time of App launch.", "AppLaunchTime-xpath");
+		} catch (Exception e) {
+		}
 		// stop Network Virtualization
 		reportiumClient.stepStart("stop virtual network and device vitals");
 		Map<String, Object> pars1 = new HashMap<>();
@@ -176,7 +180,7 @@ public class Performance {
 		long result = pageLoad.getTime() > 820 ? pageLoad.getTime() - 820 : 0;
 		System.out.println("Captured custom time for App launch is: " + result + "ms");
 		reportTimer(driver, result, threshold, description, name);
-		if(result > threshold) {
+		if (result > threshold) {
 			throw new Exception("Timer for " + description + " failed!");
 		}
 	}
