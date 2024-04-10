@@ -20,9 +20,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.time.StopWatch;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
@@ -30,7 +32,8 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebElement;
@@ -145,7 +148,7 @@ public class PerfectoLabUtils {
 	 * @param reportiumClient
 	 */
 	public static void assertTitle(String title, ReportiumClient reportiumClient) {
-		if (!title.equals("Web & Mobile App Testing | Continuous Testing | Perfecto")) {
+		if (!title.equals("Google")) {
 			reportiumClient.reportiumAssert("Title is mismatched", false);
 			throw new RuntimeException("Title is mismatched");
 		}else {
@@ -366,7 +369,16 @@ public class PerfectoLabUtils {
 
 		System.out.println("Upload Started");		  
 		URIBuilder taskUriBuilder = new URIBuilder("https://" + cloudName + ".app.perfectomobile.com/repository/api/v1/artifacts");
-		HttpClient httpClient = HttpClientBuilder.create().build();
+		 // Set timeouts
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(10000)
+                .setSocketTimeout(10000) 
+                .build();
+        
+		HttpClient httpClient = HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .build();
+		
 		HttpPost httppost = new HttpPost(taskUriBuilder.build());
 		httppost.setHeader("Perfecto-Authorization", securityToken);
 		
@@ -390,5 +402,12 @@ public class PerfectoLabUtils {
 		long x = stopwatch.getTime();
 		System.out.println("Status Code = " + statusCode);
 		System.out.println("Upload Time = " + Long.toString(x));
+		if (statusCode == 403) {
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                String responseBody = EntityUtils.toString(entity);
+                System.out.println("Forbidden access! Response body: " + responseBody);
+            }
+		}
 	}
 }
