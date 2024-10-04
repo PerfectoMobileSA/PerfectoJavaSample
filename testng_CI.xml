@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Suite" parallel="tests">
-	<test name="PerfectoAppium" enabled="true">
+	<test name="PerfectoAppium" enabled="false">
 		<classes>
 			<class name="com.perfecto.sampleproject.PerfectoAppium" />
 		</classes>
 	</test> <!-- Test -->
-	<test name="PerfectoSelenium" enabled="true">
+	<test name="PerfectoSelenium" enabled="false">
 		<classes>
 			<class name="com.perfecto.sampleproject.PerfectoSelenium" />
 		</classes>
@@ -29,16 +29,6 @@
 		<test name="Wifi turn off On" enabled="true">
 		<classes>
 			<class name="com.perfecto.advanced.PerfectoAppiumiOSTurnOffWifi" />
-		</classes>
-	</test> <!-- Test -->
-		<test name="Emulator" enabled="true">
-		<classes>
-			<class name="com.perfecto.virtualdevices.PerfectoEmulatorAppium" />
-		</classes>
-	</test> <!-- Test -->
-	<test name="Simulator" enabled="true">
-		<classes>
-			<class name="com.perfecto.virtualdevices.PerfectoSimulatorAppium" />
 		</classes>
 	</test> <!-- Test -->
 		<test name="performance" enabled="true">

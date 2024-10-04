@@ -37,7 +37,7 @@ public class PerfectoSelenium {
 		capabilities.setCapability("platformName", "Android");
 		capabilities.setCapability("useAppiumForWeb", true);
 		capabilities.setCapability("openDeviceTimeout", 2);
-
+		capabilities.setCapability("automationName", "Appium");
 		// The below capability is mandatory. Please do not replace it.
 		capabilities.setCapability("securityToken", PerfectoLabUtils.fetchSecurityToken(securityToken));
 
@@ -69,7 +69,7 @@ public class PerfectoSelenium {
 		capabilities.setCapability("useAppiumForWeb", true);
 		capabilities.setCapability("model", "iPhone.*");
 		capabilities.setCapability("openDeviceTimeout", 2);
-
+		capabilities.setCapability("automationName", "Appium");
 		// The below capability is mandatory. Please do not replace it.
 		capabilities.setCapability("securityToken", PerfectoLabUtils.fetchSecurityToken(securityToken));
 

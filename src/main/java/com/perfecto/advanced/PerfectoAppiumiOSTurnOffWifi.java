@@ -40,6 +40,7 @@ public class PerfectoAppiumiOSTurnOffWifi {
 		capabilities.setCapability("enableAppiumBehavior", true);
 		capabilities.setCapability("openDeviceTimeout", 2);
 		capabilities.setCapability("bundleId", "com.apple.mobilesafari");
+		capabilities.setCapability("automationName", "Appium");
 		driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); //Creates reportiumClient

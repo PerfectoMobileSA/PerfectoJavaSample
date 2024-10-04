@@ -7,9 +7,9 @@ This sample project is designed to get you up and running within few simple step
 Begin with installing the dependencies below, and continue with the Getting Started procedure below.
 
 ### Dependencies
-There are several prerequisite dependencies you should install on your machine prior to starting to work with this project:
+There are several prerequisite de	pendencies you should install on your machine prior to starting to work with this project:
 
-* [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* Java 11
 
 * An IDE to write your tests on - [Eclipse](http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/marsr) or [IntelliJ](https://www.jetbrains.com/idea/download/#)
 

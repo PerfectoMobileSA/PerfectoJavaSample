@@ -46,6 +46,7 @@ public class Performance {
 		capabilities.setCapability("openDeviceTimeout", 15);
 		capabilities.setCapability("appPackage", "com.samsung.android.messaging");
 		capabilities.setCapability("autoLaunch", true);
+		capabilities.setCapability("automationName", "Appium");
 		driver = new RemoteWebDriver(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)
 				+ ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
 		driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);

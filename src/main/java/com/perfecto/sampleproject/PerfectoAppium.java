@@ -51,7 +51,7 @@ public class PerfectoAppium {
 		capabilities.setCapability("autoLaunch", true); // Whether to install and launch the app automatically.
 		capabilities.setCapability("takesScreenshot", false);
 		capabilities.setCapability("screenshotOnError", true); // Take screenshot only on errors
-		
+		capabilities.setCapability("automationName", "Appium");
 		// The below capability is mandatory. Please do not replace it.
 		capabilities.setCapability("securityToken", securityToken);
 		

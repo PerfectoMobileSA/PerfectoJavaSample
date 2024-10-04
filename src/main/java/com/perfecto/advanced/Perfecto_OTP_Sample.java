@@ -44,6 +44,7 @@ public class Perfecto_OTP_Sample {
 		capabilities.setCapability("openDeviceTimeout", 4);
 		capabilities.setCapability("appPackage", "com.samsung.android.messaging");
 		capabilities.setCapability("autoLaunch",true); 
+		capabilities.setCapability("automationName", "Appium");
 		driver = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
@@ -58,6 +59,7 @@ public class Perfecto_OTP_Sample {
 		capabilities.setCapability("openDeviceTimeout", 4);
 		capabilities.setCapability("bundleId", "com.apple.MobileSMS");
 		capabilities.setCapability("autoLaunch",true); 
+		capabilities.setCapability("automationName", "Appium");
 		driver2 = (RemoteWebDriver)(new AppiumDriver<>(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities)); 
 		driver2.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		String phoneNumber = PerfectoLabUtils.getDevicePhoneNumber(driver2);
