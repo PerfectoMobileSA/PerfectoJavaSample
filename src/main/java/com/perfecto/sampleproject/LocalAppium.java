@@ -1,6 +1,6 @@
 package com.perfecto.sampleproject;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.SessionNotCreatedException;
@@ -26,17 +26,24 @@ public class LocalAppium {
 		capabilities.setCapability("appPackage", "com.android.settings");
 		capabilities.setCapability("appActivity", "com.android.settings.Settings");	
 		try {
-			driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+			
+			driver.findElement(By.xpath("//*[contains(@resource-id,':id/collpasing_app_bar_extended_title') or contains(@resource-id,'settings:id/search')] | //*[contains(@text,'Search') | //*[@content-desc='Search']]")).isDisplayed();
+			driver.findElement(By.xpath("//*[contains(@text,'Data usage')]")).click();
+			WebElement data = driver.findElement(By.xpath("//*[contains(@resource-id, 'action_bar')]//*[@text='Data usage']"));
+			PerfectoLabUtils.assertText(data, null, "Data usage");
+			
 		}catch(SessionNotCreatedException e){
 			throw new RuntimeException("Driver not created with capabilities: " + capabilities.toString());
+		}finally {
+			if(driver !=null ) {
+				driver.quit();
+			}
 		}
 		
-		driver.findElement(By.xpath("//*[contains(@resource-id,':id/collpasing_app_bar_extended_title') or contains(@resource-id,'settings:id/search')] | //*[contains(@text,'Search') | //*[@content-desc='Search']]")).isDisplayed();
-		driver.findElement(By.xpath("//*[contains(@text,'Data usage')]")).click();
-		WebElement data = driver.findElement(By.xpath("//*[contains(@resource-id, 'action_bar')]//*[@text='Data usage']"));
-		PerfectoLabUtils.assertText(data, null, "Data usage");
-		driver.quit();
+		
+		
 	}
 
 }

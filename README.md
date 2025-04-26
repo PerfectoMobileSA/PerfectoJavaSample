@@ -50,19 +50,18 @@ TestNG Plugin is built-in in the IntelliJ IDEA, from version 7 onwards.
 ## Running sample as is
 
 
-* Open PerfectoAppium.java and PerfectoSelenium.java</p>
+* Options to provide Perfecto cloud details:
 
-* Search for the below line and replace `<<cloud name>>` with your perfecto cloud name (e.g. testcloud is the cloudName of free trial users, Kindly reach out to [Perfecto support](https://www.perforce.com/support/request-support) in case of queries) or pass it as maven properties: `-DcloudName=<<cloud name>>`</br>  
-		&nbsp;&nbsp;	&nbsp;&nbsp; String cloudName = `"<<cloud name>>"`;
-		</br>
-		</p>
-* Search for the below line and replace `<<SECURITY TOKEN>>` with your perfecto [security token](https://developers.perfectomobile.com/display/PD/Generate+security+tokens) or pass it as maven properties: `-DsecurityToken=<<SECURITY TOKEN>>` </br></p>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String securityToken = `"<<SECURITY TOKEN>>"`;
-	</br>
+<p>&nbsp;&nbsp;&nbsp;&nbsp; A. Open the application.properties, uncomment the properties and provide value.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp; B. Pass following parameters as maven properties:</p>
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a. `-Dperfecto.cloud.name=<<cloud name>>` (Required if not provided in option A)
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b. `-Dperfecto.security.token=<<security token>>` (Required if not provided in option A)
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c. `-Dreportium.job.name=<<job name>>` (Optional)
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d. `-Dreportium.job.number=<<job number>>` (Optional)
 
 Note: Refer to official documentation on how to execute from eclipse / IntelliJ. </br>
 * Run pom.xml with the below maven goals & properties when: </p>
-   a. If credentials are hardcoded:
+   a. If credentials are provided using application.properties:
 		
 		clean
 		install
@@ -71,8 +70,8 @@ Note: Refer to official documentation on how to execute from eclipse / IntelliJ.
 		
 		clean
 		install
-		-DcloudName=${cloudName}
-		-DsecurityToken=${securityToken}
+		-Dperfecto.cloud.name=${cloudName}
+		-Dperfecto.security.token=${securityToken}
 		-DtestngXmlFile=testng_perfecto.xml
 </p>
 
@@ -82,10 +81,10 @@ Note: Refer to official documentation on how to execute from eclipse / IntelliJ.
 
 		clean
 		install
-		-DcloudName=${cloudName}
+		-Dperfecto.cloud.name=${cloudName}
 		-DtestngXmlFile=testng_perfecto.xml
-		-DsecurityToken=${securityToken}
-		-Dreportium-job-name=${JOB_NAME} 
-		-Dreportium-job-number=${BUILD_NUMBER} 
+		-Dperfecto.security.token=${securityToken}
+		-Dreportium.job.name=${JOB_NAME} 
+		-Dreportium.job.number=${BUILD_NUMBER} 
 		-Dreportium-job-branch=${GIT_BRANCH} 
-		-Dreportium-tags=${myTag}
+		-Dreportium.tags=${myTag}

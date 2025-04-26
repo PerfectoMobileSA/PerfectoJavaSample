@@ -4,12 +4,11 @@ package com.perfecto.advanced;
 import java.io.File;
 import java.io.FileWriter;
 import java.net.URL;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestResult;
@@ -22,38 +21,49 @@ import com.perfecto.reportium.test.result.TestResult;
 import com.perfecto.reportium.test.result.TestResultFactory;
 import com.perfecto.sampleproject.PerfectoLabUtils;
 
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 
 public class Audio_To_Text {
+
 	RemoteWebDriver driver;
 	ReportiumClient reportiumClient;
-	
-	// MAKE SURE TO HAVE Audio validation and transcription commands license to run this successfully. Contact Support for more info.
+
+	// MAKE SURE TO HAVE Audio validation and transcription commands license to run
+	// this successfully. Contact Support for more info.
 
 	@Test
 	public void appiumTest() throws Exception {
-		// Replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it
-		// as maven properties: -DcloudName=<<cloud name>>
-		String cloudName = "<<cloud name>>";
-		// Replace <<security token>> with your perfecto security token or pass it as
-		// maven properties: -DsecurityToken=<<SECURITY TOKEN>> More info:
+
+		// Replace <<cloud name>> with your perfecto cloud name (e.g. demo) in
+		// application.properties file or pass it
+		// as maven properties: -Dperfecto.cloud.name=<<cloud name>>
+		String cloudName = PerfectoLabUtils.getPerfectoCloudName();
+
+		// //Replace <<security token>> with your perfecto security token in
+		// application.properties file or pass it as
+		// maven properties: -Dperfecto.security.token=<<SECURITY TOKEN>> More info:
 		// https://developers.perfectomobile.com/display/PD/Generate+security+tokens
-		String securityToken = "<<security token>>";
+		String securityToken = PerfectoLabUtils.getSecurityToken();
 
 		// A sample perfecto connect appium script to connect with a perfecto android
 		// device and perform addition validation in calculator app.
 		String browserName = "mobileOS";
-		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
-		capabilities.setCapability("securityToken", PerfectoLabUtils.fetchSecurityToken(securityToken));
-		capabilities.setCapability("platformName", "Android");
-		capabilities.setCapability("enableAppiumBehavior", true);
-		capabilities.setCapability("openDeviceTimeout", 2);
-		capabilities.setCapability("appPackage", "com.android.settings");
-		capabilities.setCapability("appActivity", "com.android.settings.Settings");
-		capabilities.setCapability("automationName", "Appium");
-		driver = (RemoteWebDriver) (new AppiumDriver<>(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)
-				+ ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities));
-		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		DesiredCapabilities capabilities = new DesiredCapabilities();
+		capabilities.setCapability("perfecto:browserName", browserName);
+		capabilities.setCapability("perfecto:securityToken", securityToken);
+		capabilities.setCapability("perfecto:platformName", "Android");
+		capabilities.setCapability("perfecto:enableAppiumBehavior", true);
+		capabilities.setCapability("perfecto:openDeviceTimeout", 2);
+		capabilities.setCapability("perfecto:appPackage", "com.android.settings");
+		capabilities.setCapability("perfecto:appActivity", "com.android.settings.Settings");
+		capabilities.setCapability("perfecto:automationName", "UiAutomator2");
+
+		driver = (RemoteWebDriver) (new AndroidDriver(
+				new URL("https://" + cloudName + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"),
+				capabilities));
+
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); // Creates reportiumClient
 		reportiumClient.testStart("Audio_2_Text", new TestContext("audio"));
 		reportiumClient.stepStart("audio to text");
@@ -76,18 +86,22 @@ public class Audio_To_Text {
 	@AfterMethod
 	public void afterMethod(ITestResult result) {
 		TestResult testResult = null;
-		if (result.getStatus() == result.SUCCESS) {
+		if (result.getStatus() == ITestResult.SUCCESS) {
 			testResult = TestResultFactory.createSuccess();
-		} else if (result.getStatus() == result.FAILURE) {
+		} else if (result.getStatus() == ITestResult.FAILURE) {
 			testResult = TestResultFactory.createFailure(result.getThrowable());
 		}
-		reportiumClient.testStop(testResult);
-
-		driver.close();
-		driver.quit();
-		// Retrieve the URL to the DigitalZoom Report
-		String reportURL = reportiumClient.getReportUrl();
-		System.out.println(reportURL);
+		
+		if(null != reportiumClient) {
+			reportiumClient.testStop(testResult);
+			// Retrieve the URL to the DigitalZoom Report
+			String reportURL = reportiumClient.getReportUrl();
+			System.out.println(reportURL);
+		}
+		
+		if(null != driver) {
+			driver.quit();
+		}
 	}
 
 }

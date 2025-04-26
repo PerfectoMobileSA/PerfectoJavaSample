@@ -1,6 +1,5 @@
 package com.perfecto.advanced;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -9,12 +8,9 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.DriverCommand;
-import org.openqa.selenium.remote.RemoteExecuteMethod;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
 import com.perfecto.reportium.client.ReportiumClient;
@@ -22,6 +18,10 @@ import com.perfecto.reportium.test.TestContext;
 import com.perfecto.reportium.test.result.TestResult;
 import com.perfecto.reportium.test.result.TestResultFactory;
 import com.perfecto.sampleproject.PerfectoLabUtils;
+
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
+import io.perfecto.utils.PerfectoAndroidDriverFactory;
 
 public class Performance {
 	private static RemoteWebDriver driver;
@@ -32,14 +32,16 @@ public class Performance {
 	public void appiumAppTest() throws Exception {
 		// Replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it
 		// as maven properties: -DcloudName=<<cloud name>>
-		String cloudName = "<<cloud name>>";
+		String cloudName = PerfectoLabUtils.getPerfectoCloudName();
+
 		// //Replace <<security token>> with your perfecto security token or pass it as
 		// maven properties: -DsecurityToken=<<SECURITY TOKEN>> More info:
 		// https://developers.perfectomobile.com/display/PD/Generate+security+tokens
-		String securityToken = "<<security token>>";
+		String securityToken = PerfectoLabUtils.getSecurityToken();
+
 		String platformName = "Android";
 		DesiredCapabilities capabilities = new DesiredCapabilities("mobileOS", "", Platform.ANY);
-		capabilities.setCapability("securityToken", PerfectoLabUtils.fetchSecurityToken(securityToken));
+		capabilities.setCapability("securityToken", securityToken);
 		capabilities.setCapability("useAppiumForWeb", "true");
 		capabilities.setCapability("model", "Galaxy.*");
 		capabilities.setCapability("platformName", platformName);
@@ -47,9 +49,7 @@ public class Performance {
 		capabilities.setCapability("appPackage", "com.samsung.android.messaging");
 		capabilities.setCapability("autoLaunch", true);
 		capabilities.setCapability("automationName", "Appium");
-		driver = new RemoteWebDriver(new URL("https://" + PerfectoLabUtils.fetchCloudName(cloudName)
-				+ ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
-		driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
+		driver = PerfectoAndroidDriverFactory.createPerfectoDriver(cloudName, capabilities);
 
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); // Creates reportiumClient
 		reportiumClient.testStart("SUT Performance test", new TestContext("tag1")); // Starts the reportium test
@@ -126,10 +126,17 @@ public class Performance {
 	}
 
 	private static void switchToContext(RemoteWebDriver driver, String context) {
-		RemoteExecuteMethod executeMethod = new RemoteExecuteMethod(driver);
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("name", context);
-		executeMethod.execute(DriverCommand.SWITCH_TO_CONTEXT, params);
+//		RemoteExecuteMethod executeMethod = new RemoteExecuteMethod(driver);
+//		Map<String, String> params = new HashMap<String, String>();
+//		params.put("name", context);
+//		executeMethod.execute(DriverCommand.SWITCH_TO_CONTEXT, params);
+		
+		if(driver instanceof AndroidDriver) {
+			((AndroidDriver)driver).context(context);
+		}else if(driver instanceof IOSDriver)  {
+			((IOSDriver)driver).context(context);
+		}
+		
 	}
 
 	private static long timerGet(RemoteWebDriver driver, String timerType) {
@@ -155,6 +162,7 @@ public class Performance {
 		params1.put("threshold", "90");
 		params1.put("index", "1");
 		String resultString = (String) driver.executeScript("mobile:checkpoint:text", params1);
+		System.out.println(resultString);
 	}
 
 	public static String reportTimer(RemoteWebDriver driver, long result, long threshold, String description,
@@ -178,7 +186,8 @@ public class Performance {
 
 	public static void measureTimer(RemoteWebDriver driver, StopWatch pageLoad, long threshold, String description,
 			String name) throws Exception {
-		long result = pageLoad.getTime() > 820 ? pageLoad.getTime() - 820 : 0;
+		
+		long result = pageLoad.getTime(TimeUnit.MILLISECONDS) > 820 ? pageLoad.getTime(TimeUnit.MILLISECONDS) - 820 : 0;
 		System.out.println("Captured custom time for App launch is: " + result + "ms");
 		reportTimer(driver, result, threshold, description, name);
 		if (result > threshold) {
@@ -190,9 +199,9 @@ public class Performance {
 	public void afterMethod(ITestResult result) {
 		try {
 			TestResult testResult = null;
-			if (result.getStatus() == result.SUCCESS) {
+			if (result.getStatus() == ITestResult.SUCCESS) {
 				testResult = TestResultFactory.createSuccess();
-			} else if (result.getStatus() == result.FAILURE) {
+			} else if (result.getStatus() == ITestResult.FAILURE) {
 				testResult = TestResultFactory.createFailure(result.getThrowable());
 			}
 			reportiumClient.testStop(testResult);
