@@ -40,15 +40,15 @@ public class Performance {
 		String securityToken = PerfectoLabUtils.getSecurityToken();
 
 		String platformName = "Android";
-		DesiredCapabilities capabilities = new DesiredCapabilities("mobileOS", "", Platform.ANY);
-		capabilities.setCapability("securityToken", securityToken);
-		capabilities.setCapability("useAppiumForWeb", "true");
-		capabilities.setCapability("model", "Galaxy.*");
-		capabilities.setCapability("platformName", platformName);
-		capabilities.setCapability("openDeviceTimeout", 15);
-		capabilities.setCapability("appPackage", "com.samsung.android.messaging");
-		capabilities.setCapability("autoLaunch", true);
-		capabilities.setCapability("automationName", "Appium");
+		DesiredCapabilities capabilities = new DesiredCapabilities("Chrome", "", Platform.ANY);
+		capabilities.setCapability("perfecto:securityToken", securityToken);
+		capabilities.setCapability("perfecto:useAppiumForWeb", "true");
+		capabilities.setCapability("perfecto:model", "Galaxy.*");
+		capabilities.setCapability("perfecto:platformName", platformName);
+		capabilities.setCapability("perfecto:openDeviceTimeout", 15);
+//		capabilities.setCapability("perfecto:appPackage", "com.samsung.android.messaging");
+		capabilities.setCapability("perfecto:autoLaunch", true);
+		capabilities.setCapability("perfecto:automationName", "Appium");
 		driver = PerfectoAndroidDriverFactory.createPerfectoDriver(cloudName, capabilities);
 
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); // Creates reportiumClient
@@ -89,7 +89,7 @@ public class Performance {
 		// Method 1: User experience timer with Visual Text
 		// Launch Web application
 		reportiumClient.stepStart("User experience timer with Visual text");
-		switchToContext(driver, "WEBVIEW");
+//		switchToContext(driver, "WEBVIEW");
 		driver.get("https://www.perfecto.io");
 		Thread.sleep(2000);
 		driver.get("https://www.etihad.com/en-us/book");
@@ -204,14 +204,22 @@ public class Performance {
 			} else if (result.getStatus() == ITestResult.FAILURE) {
 				testResult = TestResultFactory.createFailure(result.getThrowable());
 			}
-			reportiumClient.testStop(testResult);
-			// Retrieve the URL to the DigitalZoom Report
-			String reportURL = reportiumClient.getReportUrl();
-			System.out.println(reportURL);
+			if(reportiumClient !=null) {
+				reportiumClient.testStop(testResult);
+				// Retrieve the URL to the DigitalZoom Report
+				String reportURL = reportiumClient.getReportUrl();
+				System.out.println(reportURL);
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			if(driver !=null) {
+				driver.quit();
+			}
 		}
-		driver.quit();
+		
+		
 
 	}
 

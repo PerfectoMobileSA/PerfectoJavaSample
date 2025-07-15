@@ -2,6 +2,8 @@ package com.perfecto.sampleproject;
 
 import java.net.URL;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -16,6 +18,7 @@ import com.perfecto.reportium.test.result.TestResult;
 import com.perfecto.reportium.test.result.TestResultFactory;
 
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
 
 public class PerfectoSelenium {
 	private RemoteWebDriver driver;
@@ -38,15 +41,17 @@ public class PerfectoSelenium {
 		securityToken = PerfectoLabUtils.getSecurityToken();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void androidTest() throws Exception {
 		// Mobile: Auto generate capabilities for device selection:
 		// https://developers.perfectomobile.com/display/PD/Select+a+device+for+manual+testing#Selectadeviceformanualtesting-genCapGeneratecapabilities
-		String browserName = "mobileOS";
+		String browserName = "chrome";
+				//"mobileOS";
 		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability("perfecto:browserName", browserName);
+		capabilities.setCapability("browserName", browserName);
 		capabilities.setCapability("perfecto:platformName", "Android");
-		capabilities.setCapability("perfecto:useAppiumForWeb", true);
+		capabilities.setCapability("perfecto:enableAppiumBehavior", true);
 		capabilities.setCapability("perfecto:openDeviceTimeout", 2);
 		capabilities.setCapability("perfecto:automationName", "UiAutomator2");
 		// The below capability is mandatory. Please do not replace it.
@@ -55,7 +60,7 @@ public class PerfectoSelenium {
 		driver = new AndroidDriver(new URL("https://" + cloudName
 				+ ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
+//		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
 
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); // Creates reportiumClient
 		reportiumClient.testStart("Perfecto Android mobile web test", new TestContext("tag2", "tag3"));
@@ -69,6 +74,7 @@ public class PerfectoSelenium {
 		reportiumClient.stepEnd();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void iOSTest() throws Exception {
 		// Mobile: Auto generate capabilities for device selection:
@@ -76,15 +82,17 @@ public class PerfectoSelenium {
 		// browserName should be set to safari by default to open safari browser.
 		String browserName = "safari";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
-		capabilities.setCapability("platformName", "iOS");
-		capabilities.setCapability("useAppiumForWeb", true);
-		capabilities.setCapability("model", "iPhone.*");
-		capabilities.setCapability("openDeviceTimeout", 2);
-		capabilities.setCapability("automationName", "Appium");
+		capabilities.setCapability("perfecto:platformName", "iOS");
+		
+		capabilities.setCapability("perfecto:enableAppiumBehavior", true);
+		capabilities.setCapability("perfecto:model", "iPhone.*");
+		capabilities.setCapability("perfecto:openDeviceTimeout", 2);
+		capabilities.setCapability("perfecto:automationName", "Appium");
 		// The below capability is mandatory. Please do not replace it.
-		capabilities.setCapability("securityToken", securityToken);
+		capabilities.setCapability("perfecto:securityToken", securityToken);
+		
 
-		driver = new RemoteWebDriver(new URL("https://" + cloudName
+		driver = new IOSDriver(new URL("https://" + cloudName
 				+ ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
@@ -101,21 +109,25 @@ public class PerfectoSelenium {
 		reportiumClient.stepEnd();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void webTest() throws Exception {
 		// Web: Make sure to Auto generate capabilities for device selection:
 		// https://developers.perfectomobile.com/display/PD/Select+a+device+for+manual+testing#Selectadeviceformanualtesting-genCapGeneratecapabilities
 		DesiredCapabilities capabilities = new DesiredCapabilities("", "", Platform.ANY);
 		capabilities.setCapability("platformName", "Windows");
-		capabilities.setCapability("platformVersion", "11");
+		
 		capabilities.setCapability("browserName", "Chrome");
 		capabilities.setCapability("browserVersion", "beta");
-		capabilities.setCapability("location", "US East");
-		capabilities.setCapability("resolution", "1920x1080");
 
-		// The below capability is mandatory. Please do not replace it.
-		capabilities.setCapability("securityToken", securityToken);
-
+		Map<String,String> perfectoOptions = new HashMap<String, String>();
+		perfectoOptions.put("securityToken", securityToken);
+//		perfectoOptions.put("location", "US East");
+		perfectoOptions.put("resolution", "1920x1080");
+		perfectoOptions.put("platformVersion", "11");
+		capabilities.setCapability("perfecto:options", perfectoOptions);
+		
+		
 		driver = new RemoteWebDriver(new URL("https://" + cloudName
 				+ ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));

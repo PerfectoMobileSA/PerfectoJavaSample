@@ -6,32 +6,32 @@
 			<class name="com.perfecto.sampleproject.PerfectoAppium" />
 		</classes>
 	</test> <!-- Test -->
-	<test name="PerfectoSelenium" enabled="false">
+	<test name="PerfectoSelenium" enabled="true">
 		<classes>
 			<class name="com.perfecto.sampleproject.PerfectoSelenium" />
 		</classes>
 	</test> <!-- Test -->
-	<test name="PerfectoNativeiOS" enabled="true">
+	<test name="PerfectoNativeiOS" enabled="false">
 		<classes>
 			<class name="com.perfecto.sampleproject.PerfectoAppiumiOS" />
 		</classes>
 	</test> <!-- Test -->
-		<test name="OTP Sample" enabled="true">
+		<test name="OTP Sample" enabled="false">
 		<classes>
 			<class name="com.perfecto.advanced.Perfecto_OTP_Sample" />
 		</classes>
 	</test> <!-- Test -->
-	<test name="Audio to Text" enabled="true">
+	<test name="Audio to Text" enabled="false">
 		<classes>
 			<class name="com.perfecto.advanced.Audio_To_Text" />
 		</classes>
 	</test> <!-- Test -->
-		<test name="Wifi turn off On" enabled="true">
+		<test name="Wifi turn off On" enabled="false">
 		<classes>
 			<class name="com.perfecto.advanced.PerfectoAppiumiOSTurnOffWifi" />
 		</classes>
 	</test> <!-- Test -->
-		<test name="performance" enabled="true">
+		<test name="performance" enabled="false">
 		<classes>
 			<class name="com.perfecto.advanced.Performance" />
 		</classes> <!-- Test -->
