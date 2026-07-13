@@ -99,7 +99,7 @@ public class PerfectoSelenium {
 
 		reportiumClient = PerfectoLabUtils.setReportiumClient(driver, reportiumClient); // Creates reportiumClient
 		reportiumClient.testStart("Perfecto iOS mobile web test", new TestContext("tag2", "tag3"));
-		reportiumClient.stepStart("browser navigate to perfecto"); // Starts a reportium step
+		reportiumClient.stepStart("browser navigate to google"); // Starts a reportium step
 		driver.get("https://www.google.com");
 		reportiumClient.stepEnd();
 
